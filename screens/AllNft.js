@@ -1,6 +1,12 @@
-import { StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
-function AllNft() {}
+function AllNft() {
+  return (
+    <View>
+      <FlatList />
+    </View>
+  );
+}
 
 export default AllNft;
 
