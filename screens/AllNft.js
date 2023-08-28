@@ -125,6 +125,9 @@ function AllNft({ route, navigation }) {
         data={DUMMY_NFT}
         renderItem={renderNftItem}
         keyExtractor={(item) => item.materialId}
+        key={2}
+        numColumns={2}
+        style={styles.list}
       />
       <IconTextButton style={styles.createButton} icon="add" color={"white"}>
         Create
@@ -138,6 +141,11 @@ export default AllNft;
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    paddingHorizontal: 15,
+  },
+  list: {
+    flex: 1,
+    paddingTop: 15,
   },
   createButton: {
     position: "absolute",
