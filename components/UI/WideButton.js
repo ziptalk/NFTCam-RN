@@ -1,14 +1,15 @@
-import { Pressable, View, StyleSheet, Text } from "react-native";
-import { Fonts } from "../../constants/fonts";
+import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
 
-function WideButton({ children }) {
+import { GlobalStyles } from "../../constants/styles";
+
+function WideButton({ children, style }) {
   return (
     <View>
-      <Pressable>
-        <View style={styles.button}>
-          <Text style={[Fonts.semibold, styles.text]}>{children}</Text>
+      <TouchableOpacity activeOpacity={0.7}>
+        <View style={[styles.button, style]}>
+          <Text style={styles.text}>{children}</Text>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -17,10 +18,15 @@ export default WideButton;
 
 const styles = StyleSheet.create({
   button: {
-    marginHorizontal: 15,
-    padding: 16,
+    padding: 14,
+    backgroundColor: GlobalStyles.colors.primary,
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
     fontSize: 17,
+    fontFamily: GlobalStyles.fonts.semibold,
+    color: "white",
   },
 });
