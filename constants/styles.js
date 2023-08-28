@@ -13,4 +13,11 @@ export const GlobalStyles = {
     primary: "#007AFF",
     error: "#FF453A",
   },
+  fonts: {
+    regular: "sf-pro-regular",
+    bold: "sf-pro-bold",
+    semibold: "sf-pro-semibold",
+    medium: "sf-pro-medium",
+    thin: "sf-pro-thin",
+  },
 };
