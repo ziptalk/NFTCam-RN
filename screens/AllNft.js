@@ -1,6 +1,9 @@
+import { useLayoutEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
+
 import IconTextButton from "../components/UI/IconTextButton";
 import NftItem from "../components/AllNft/NftItem";
+import IconButton from "../components/UI/IconButton";
 
 const DUMMY_NFT = [
   {
@@ -98,6 +101,23 @@ function renderNftItem(itemData) {
 }
 
 function AllNft({ route, navigation }) {
+  const myPageButtonHandler = () => {
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <IconButton
+            icon={"person"}
+            color={"white"}
+            onPress={myPageButtonHandler}
+          />
+        );
+      },
+    });
+  }, [navigation, myPageButtonHandler]);
+
   return (
     <View style={styles.root}>
       <FlatList
