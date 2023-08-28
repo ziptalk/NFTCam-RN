@@ -102,6 +102,7 @@ function renderNftItem(itemData) {
 
 function AllNft({ route, navigation }) {
   const myPageButtonHandler = () => {
+    navigation.navigate("MyPage");
   };
 
   useLayoutEffect(() => {
