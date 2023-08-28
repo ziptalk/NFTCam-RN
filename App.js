@@ -29,9 +29,16 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="AllNft">
+        <Stack.Navigator
+          initialRouteName="AllNft"
+          screenOptions={{
+            headerStyle: { backgroundColor: "#1D1D1D" },
+            headerTitleStyle: { color: "white" },
+            contentStyle: { backgroundColor: "#151515" },
+          }}
+        >
           <Stack.Screen
             name="AllNft"
             component={AllNft}
@@ -40,9 +47,27 @@ export default function App() {
             }}
           />
           <Stack.Screen name="NftDetail" component={NftDetail} />
-          <Stack.Screen name="MintingNft" component={MintingNft} />
-          <Stack.Screen name="MyPage" component={MyPage} />
-          <Stack.Screen name="ChargePoint" component={ChargePoint} />
+          <Stack.Screen
+            name="MintingNft"
+            component={MintingNft}
+            options={{
+              title: "Minting",
+            }}
+          />
+          <Stack.Screen
+            name="MyPage"
+            component={MyPage}
+            options={{
+              title: "My Page",
+            }}
+          />
+          <Stack.Screen
+            name="ChargePoint"
+            component={ChargePoint}
+            options={{
+              title: "Charge Point",
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
