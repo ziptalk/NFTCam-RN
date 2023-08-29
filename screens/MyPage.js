@@ -1,13 +1,40 @@
+import { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { createAccount, getAccount } from "@rly-network/mobile-sdk";
 
 import SmallIndex from "../components/UI/SmallIndex";
 import { GlobalStyles } from "../constants/styles";
 
 function MyPage({ route, navigation }) {
+  const [accountLoaded, setAccountLoaded] = useState(false);
+  const [rlyAccount, setRlyAccount] = useState();
+
+  useEffect(() => {
+    const readAccount = async () => {
+      const account = await getAccount();
+      console.log("user account", account);
+
+      setAccountLoaded(true);
+
+      if (account) {
+        setRlyAccount(account);
+      }
+    };
+
+    if (!accountLoaded) {
+      readAccount();
+    }
+  }, [accountLoaded]);
+
+  const createRlyAccount = async () => {
+    const rlyAct = await createAccount();
+    setRlyAccount(rlyAct);
+  };
+
   const chargeButtonHandler = () => {
     navigation.navigate("ChargePoint");
   };
-  const connectWalletHandler = () => {};
+  const copyWalletAdress = () => {};
 
   return (
     <View style={styles.root}>
@@ -21,9 +48,17 @@ function MyPage({ route, navigation }) {
         </TouchableOpacity>
       </View>
       <Text style={styles.walletsLabel}>Wallets</Text>
-      <TouchableOpacity activeOpacity={0.7} onPress={connectWalletHandler}>
+      {/* TODO: account 있는지에 따라 아예 컴포넌트 분리해 표시해주기 
+                + 생성한 지갑 서버에 추가하기
+      */}
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={rlyAccount ? copyWalletAdress : createRlyAccount}
+      >
         <View style={styles.connectButton}>
-          <Text style={styles.connectButtonText}>Connect Rally Protocol</Text>
+          <Text style={styles.connectButtonText}>
+            {rlyAccount ? rlyAccount : "Connect Rally Protocol"}
+          </Text>
         </View>
       </TouchableOpacity>
     </View>
