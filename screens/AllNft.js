@@ -144,11 +144,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   list: {
-    flex: 1,
-    paddingTop: 15,
+    paddingTop: 20,
   },
   createButton: {
     position: "absolute",
-    bottom: 30,
+    bottom: 32,
+    shadowColor: "black",
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 5,
   },
 });

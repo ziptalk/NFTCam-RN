@@ -3,10 +3,10 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { GlobalStyles } from "../../constants/styles";
 
-function IconTextButton({ children, icon, color }) {
+function IconTextButton({ children, icon, color, style }) {
   return (
     <TouchableOpacity activeOpacity={0.8}>
-      <View style={styles.button}>
+      <View style={[styles.button, style]}>
         <Ionicons name={icon} size={22} color={color} />
         <Text style={styles.text}>{children}</Text>
       </View>
