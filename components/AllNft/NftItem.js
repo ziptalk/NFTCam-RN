@@ -1,16 +1,24 @@
-import { StyleSheet, View, ImageBackground, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import MintingIcon from "./MintingIcon";
 
 function NftItem({ source, isMinting }) {
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={styles.image}
-        source={{ uri: source }}
-        resizeMode="cover"
-      >
-        {isMinting === "MINTED" && <MintingIcon style={styles.mintingIcon} />}
-      </ImageBackground>
+      <TouchableOpacity activeOpacity={0.7}>
+        <ImageBackground
+          style={styles.image}
+          source={{ uri: source }}
+          resizeMode="cover"
+        >
+          {isMinting === "MINTED" && <MintingIcon style={styles.mintingIcon} />}
+        </ImageBackground>
+      </TouchableOpacity>
     </View>
   );
 }
