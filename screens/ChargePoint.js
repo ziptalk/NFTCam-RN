@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import SmallIndex from "../components/UI/SmallIndex";
 import { GlobalStyles } from "../constants/styles";
@@ -10,7 +10,8 @@ function ChargePoint({ route, navigation }) {
       <SmallIndex>CURRENT POINT</SmallIndex>
       <Text style={styles.currentPoint}>5,432 P</Text>
       <SmallIndex>POINTS TO CHARGE</SmallIndex>
-      <Text style={styles.chargePoint}>100 P</Text>
+      {/* <Text style={styles.chargePoint}>100 P</Text> */}
+      <TextInput maxLength={10} keyboardType="number-pad" autoFocus={true} />
       <WideButton style={styles.chargeButton}>Charge Point</WideButton>
     </View>
   );
