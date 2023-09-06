@@ -1,17 +1,32 @@
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import IconTextButton from "../components/UI/IconTextButton";
 import NftItem from "../components/AllNft/NftItem";
 import IconButton from "../components/UI/IconButton";
 import { NftsContext } from "../store/nfts-context";
+import { AuthContext } from "../store/auth-context";
+import { login } from "../util/http";
 
 function renderNftItem(itemData) {
   return <NftItem {...itemData.item} />;
 }
 
 function AllNft({ route, navigation }) {
+  const authCtx = useContext(AuthContext);
   const nftsCtx = useContext(NftsContext);
+
+  async function authenticateUser() {
+    try {
+      const tokens = await login();
+      authCtx.authenticate(tokens.accessToken, tokens.refreshToken);
+      console.log("context : ", authCtx.accessToken);
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    authenticateUser();
+  }, []);
 
   const myPageButtonHandler = () => {
     navigation.navigate("MyPage");
