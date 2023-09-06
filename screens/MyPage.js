@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { createAccount, getAccount } from "@rly-network/mobile-sdk";
+import axios from "axios";
 
 import SmallIndex from "../components/UI/SmallIndex";
 import { GlobalStyles } from "../constants/styles";
+import { BASE_URL } from "../util/http";
 
 function MyPage({ route, navigation }) {
   const [accountLoaded, setAccountLoaded] = useState(false);
   const [rlyAccount, setRlyAccount] = useState();
 
   useEffect(() => {
-    const readAccount = async () => {
+    async function readAccount() {
       const account = await getAccount();
       console.log("user account", account);
 
@@ -19,12 +21,19 @@ function MyPage({ route, navigation }) {
       if (account) {
         setRlyAccount(account);
       }
-    };
+    }
 
     if (!accountLoaded) {
       readAccount();
     }
   }, [accountLoaded]);
+
+  async function createWallet() {
+    const response = await axios.post(BASE_URL + "/wallet", {
+      walletName: "RallyProtocol",
+      walletAdress: rlyAccount,
+    });
+  }
 
   const createRlyAccount = async () => {
     const rlyAct = await createAccount();
