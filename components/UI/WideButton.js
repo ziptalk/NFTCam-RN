@@ -4,9 +4,9 @@ import { GlobalStyles } from "../../constants/styles";
 
 function WideButton({ children, style }) {
   return (
-    <View>
+    <View style={[style, styles.buttonContainer]}>
       <TouchableOpacity activeOpacity={0.7}>
-        <View style={[styles.button, style]}>
+        <View style={[styles.button]}>
           <Text style={styles.text}>{children}</Text>
         </View>
       </TouchableOpacity>
@@ -17,7 +17,11 @@ function WideButton({ children, style }) {
 export default WideButton;
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    width: "100%",
+  },
   button: {
+    marginHorizontal: 15,
     padding: 14,
     backgroundColor: GlobalStyles.colors.primary,
     borderRadius: 14,

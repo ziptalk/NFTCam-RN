@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import AllNft from "./screens/AllNft";
 import NftDetail from "./screens/NftDetail";
@@ -10,9 +11,19 @@ import MyPage from "./screens/MyPage";
 import ChargePoint from "./screens/ChargePoint";
 import NftsContextProvider from "./store/nfts-context";
 import AuthContextProvider from "./store/auth-context";
+import { login } from "./util/http";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+
+  async function authenticateUser() {
+    try {
+      const tokens = await login();
+      await AsyncStorage.setItem("accessToken", tokens.accessToken);
+      await AsyncStorage.setItem("refreshToken", tokens.refreshToken);
+    } catch (error) {}
+  }
+  authenticateUser();
 
   const [fontsLoaded] = useFonts({
     "sf-pro-regular": require("./assets/fonts/SF-Pro-Text-Regular.otf"),
@@ -26,7 +37,7 @@ export default function App() {
     console.log("not loaded");
   }
 
-  // TODO: 폰트 로딩 여부에 따라 스플래시 표시하기
+  // TODO: 폰트 로딩 방식 바꾸기
 
   return (
     <>
@@ -49,7 +60,13 @@ export default function App() {
                   title: "Home",
                 }}
               />
-              <Stack.Screen name="NftDetail" component={NftDetail} />
+              <Stack.Screen
+                name="NftDetail"
+                component={NftDetail}
+                options={{
+                  headerShown: false,
+                }}
+              />
               <Stack.Screen
                 name="MintingNft"
                 component={MintingNft}

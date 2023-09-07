@@ -24,6 +24,13 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.primary,
     flexDirection: "row",
     alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 3,
+    shadowColor: GlobalStyles.colors.gray900,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.3,
   },
   text: {
     fontSize: 16,

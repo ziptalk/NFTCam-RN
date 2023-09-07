@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 function IconButton({ icon, onPress }) {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-      <Ionicons name={icon} size={24} color={"white"} />
+      <Ionicons name={icon} size={20} color={"white"} />
     </TouchableOpacity>
   );
 }
