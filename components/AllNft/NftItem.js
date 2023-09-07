@@ -5,12 +5,20 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import MintingIcon from "./MintingIcon";
 
 function NftItem({ source, isMinting }) {
+  const navigation = useNavigation();
+
+  function itemPressHandler() {
+    navigation.navigate("NftDetail");
+  }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.7}>
+      <TouchableOpacity activeOpacity={0.7} onPress={itemPressHandler}>
         <ImageBackground
           style={styles.image}
           source={{ uri: source }}

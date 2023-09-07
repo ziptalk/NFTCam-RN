@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 export const BASE_URL = "https://www.nft-flex.com/api";
 
@@ -13,10 +14,12 @@ export async function reissueToken(refreshToken) {
   const data = { refreshToken: refreshToken };
   const response = await axios.post(BASE_URL + "/auth/reissue", data);
 
-  return {
-    accessToken: response.data.accessToken,
-    refreshToken: response.data.refreshToken,
-  };
+  return response.data;
+}
+
+export async function fetchMaterials() {
+  const response = await axiosInstance.get(BASE_URL + "/material/list");
+  return response.data.data;
 }
 
 export async function storeExpense(expenseData) {

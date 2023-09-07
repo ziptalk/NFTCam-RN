@@ -1,9 +1,8 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BASE_URL } from "./http";
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: "https://www.nft-flex.com/api",
   timeout: 5000,
 });
 
@@ -27,9 +26,12 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       async function reissue() {
         const refreshToken = await AsyncStorage.getItem("refreshToken");
-        const response = await axios.put(BASE_URL + "/auth/reissue", {
-          refreshToken: refreshToken,
-        });
+        const response = await axios.put(
+          "https://www.nft-flex.com/api" + "/auth/reissue",
+          {
+            refreshToken: refreshToken,
+          }
+        );
         AsyncStorage.setItem("accessToken", response.data.accessToken);
         AsyncStorage.setItem("refreshToken", response.data.refreshToken);
 

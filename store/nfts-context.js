@@ -93,12 +93,15 @@ const DUMMY_NFT = [
 
 export const NftsContext = createContext({
   nfts: [],
+  setNfts: () => {},
   addNft: () => {},
   deleteNft: () => {},
 });
 
 function nftReducer(state, action) {
   switch (action.type) {
+    case "SET":
+      return action.payload;
     case "ADD":
       return state;
     case "DELETE":
@@ -111,6 +114,10 @@ function nftReducer(state, action) {
 function NftsContextProvider({ children }) {
   const [nftState, dispatch] = useReducer(nftReducer, DUMMY_NFT);
 
+  function setNfts(nfts) {
+    dispatch({ type: "SET", payload: nfts });
+  }
+
   function addNft(nftData) {
     dispatch({ type: "ADD", payload: nftData });
   }
@@ -121,6 +128,7 @@ function NftsContextProvider({ children }) {
 
   const value = {
     nfts: nftState,
+    setNfts: setNfts,
     addNft: addNft,
     deleteNft: deleteNft,
   };

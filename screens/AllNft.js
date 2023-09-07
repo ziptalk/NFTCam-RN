@@ -1,36 +1,25 @@
-import { useContext, useEffect, useLayoutEffect } from "react";
+import { useContext, useEffect, useState, useLayoutEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import IconTextButton from "../components/UI/IconTextButton";
 import NftItem from "../components/AllNft/NftItem";
 import IconButton from "../components/UI/IconButton";
 import { NftsContext } from "../store/nfts-context";
-import { AuthContext } from "../store/auth-context";
-import { login } from "../util/http";
+import { fetchMaterials } from "../util/http";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function renderNftItem(itemData) {
   return <NftItem {...itemData.item} />;
 }
 
 function AllNft({ route, navigation }) {
-  const authCtx = useContext(AuthContext);
+  const [isFetching, setIsFetching] = useState(true);
+
   const nftsCtx = useContext(NftsContext);
 
-  async function authenticateUser() {
-    try {
-      const tokens = await login();
-      authCtx.authenticate(tokens.accessToken, tokens.refreshToken);
-      console.log("context : ", authCtx.accessToken);
-    } catch (error) {}
-  }
-
   useEffect(() => {
-    authenticateUser();
+    getMaterials();
   }, []);
-
-  const myPageButtonHandler = () => {
-    navigation.navigate("MyPage");
-  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -45,6 +34,25 @@ function AllNft({ route, navigation }) {
       },
     });
   }, [navigation, myPageButtonHandler]);
+
+  async function getMaterials() {
+    setIsFetching(true);
+    try {
+      const materials = await fetchMaterials();
+      nftsCtx.setNfts(materials);
+    } catch (error) {
+      console.log("Error! ", error);
+    }
+    setIsFetching(false);
+  }
+
+  const myPageButtonHandler = () => {
+    navigation.navigate("MyPage");
+  };
+
+  if (isFetching) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.root}>
