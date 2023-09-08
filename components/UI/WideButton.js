@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   button: {
-    marginHorizontal: 15,
+    // marginHorizontal: 15,
     padding: 14,
     backgroundColor: GlobalStyles.colors.primary,
     borderRadius: 14,

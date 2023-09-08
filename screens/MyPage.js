@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     padding: 15,
+    paddingTop: 28,
   },
   pointContainer: {
     flexDirection: "row",

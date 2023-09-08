@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
   mintingButton: {
     position: "absolute",
     bottom: 32,
+    paddingHorizontal: 15,
   },
   stateText: {
     marginVertical: 20,
