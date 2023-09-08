@@ -1,23 +1,36 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import SmallIndex from "../components/UI/SmallIndex";
 import { GlobalStyles } from "../constants/styles";
 import WideButton from "../components/UI/WideButton";
+import { PointContext } from "../store/point-context";
+import { patchPoint } from "../util/http";
 
 function ChargePoint({ route, navigation }) {
   const [chargeValue, setChargeValue] = useState("");
+
+  const pointCtx = useContext(PointContext);
 
   function inputChagneHandler(enteredValue) {
     setChargeValue(enteredValue);
   }
 
-  function chargeButtonHandler() {}
+  function chargeButtonHandler() {
+    chargePoint();
+    navigation.goBack();
+    // TODO: 충전 성공 토스트메시지라도 띄워줘야하나?
+  }
+
+  async function chargePoint() {
+    const response = await patchPoint(chargeValue);
+    pointCtx.addPoint(chargeValue);
+  }
 
   return (
     <View style={styles.root}>
       <SmallIndex>CURRENT POINT</SmallIndex>
-      <Text style={styles.currentPoint}>5,432 P</Text>
+      <Text style={styles.currentPoint}>{pointCtx.point} P</Text>
       <SmallIndex>POINTS TO CHARGE</SmallIndex>
       <View style={styles.textInputContainer}>
         <TextInput

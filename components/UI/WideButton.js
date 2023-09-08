@@ -2,10 +2,10 @@ import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
 
 import { GlobalStyles } from "../../constants/styles";
 
-function WideButton({ children, style }) {
+function WideButton({ children, style, onPress }) {
   return (
     <View style={[style, styles.buttonContainer]}>
-      <TouchableOpacity activeOpacity={0.7}>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
         <View style={[styles.button]}>
           <Text style={styles.text}>{children}</Text>
         </View>
