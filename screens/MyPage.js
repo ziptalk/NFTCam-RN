@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,11 +11,13 @@ import { createAccount, getAccount } from "@rly-network/mobile-sdk";
 import SmallIndex from "../components/UI/SmallIndex";
 import { GlobalStyles } from "../constants/styles";
 import { fetchPoint, postWallet } from "../util/http";
+import { PointContext } from "../store/point-context";
 
 function MyPage({ route, navigation }) {
   const [accountLoaded, setAccountLoaded] = useState(false);
   const [rlyAccount, setRlyAccount] = useState();
-  const [pointValue, setPointValue] = useState("0");
+
+  const pointCtx = useContext(PointContext);
 
   useEffect(() => {
     getPoint();
@@ -39,7 +41,8 @@ function MyPage({ route, navigation }) {
   async function getPoint() {
     try {
       const point = await fetchPoint();
-      setPointValue(point);
+      //   setPointValue(point);
+      pointCtx.setPoint(point);
     } catch (error) {
       console.log("Error! ", error);
     }
@@ -61,7 +64,7 @@ function MyPage({ route, navigation }) {
     <View style={styles.root}>
       <SmallIndex>CURRENT POINT</SmallIndex>
       <View style={styles.pointContainer}>
-        <Text style={styles.pointText}>{pointValue} P</Text>
+        <Text style={styles.pointText}>{pointCtx.point} P</Text>
         <TouchableOpacity activeOpacity={0.7} onPress={chargeButtonHandler}>
           <View style={styles.chargeButton}>
             <Text style={styles.chargeButtonText}>CHARGE +</Text>

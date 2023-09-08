@@ -10,8 +10,8 @@ import MintingNft from "./screens/MintingNft";
 import MyPage from "./screens/MyPage";
 import ChargePoint from "./screens/ChargePoint";
 import NftsContextProvider from "./store/nfts-context";
-import AuthContextProvider from "./store/auth-context";
 import { login } from "./util/http";
+import PointContextProvider from "./store/point-context";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -42,8 +42,8 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <AuthContextProvider>
-        <NftsContextProvider>
+      <NftsContextProvider>
+        <PointContextProvider>
           <NavigationContainer>
             <Stack.Navigator
               initialRouteName="AllNft"
@@ -90,8 +90,8 @@ export default function App() {
               />
             </Stack.Navigator>
           </NavigationContainer>
-        </NftsContextProvider>
-      </AuthContextProvider>
+        </PointContextProvider>
+      </NftsContextProvider>
     </>
   );
 }
