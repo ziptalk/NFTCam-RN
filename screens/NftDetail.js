@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Dimensions, Text } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
@@ -8,6 +7,8 @@ import CircleIconButton from "../components/UI/CircleIconButton";
 import { GlobalStyles } from "../constants/styles";
 import WideButton from "../components/UI/WideButton";
 import InfoText from "../components/NftDetail/InfoText";
+import { NftsContext } from "../store/nfts-context";
+import StateText from "../components/NftDetail/StateText";
 
 function NftDetail({ isMinting }) {
 function NftDetail({ route, navigation }) {
@@ -51,7 +52,7 @@ function NftDetail({ route, navigation }) {
             />
           </View>
         </View>
-        <Text style={styles.stateText}>🔥 Mint to put in the wallet</Text>
+        <StateText state={selectedMaterial.isMinting} />
         <View style={styles.infoContainer}>
           <InfoText type={"Date and Time"} content={selectedMaterial.date} />
           <InfoText type={"Device"} content={selectedMaterial.device} />
