@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Dimensions, Text } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -9,8 +10,16 @@ import WideButton from "../components/UI/WideButton";
 import InfoText from "../components/NftDetail/InfoText";
 
 function NftDetail({ isMinting }) {
+function NftDetail({ route, navigation }) {
   const [isFetching, setIsFetching] = useState(true);
+
+  const nftsCtx = useContext(NftsContext);
+
   const insets = useSafeAreaInsets();
+  const materialId = route.params.materialId;
+  let selectedMaterial = nftsCtx.nfts.find(
+    (nft) => nft.materialId === materialId
+  );
 
   useEffect(() => {}, []);
 
@@ -24,9 +33,7 @@ function NftDetail({ isMinting }) {
     <View style={styles.container}>
       <ScrollView>
         <AutoHeightImage
-          source={{
-            uri: "https://images.unsplash.com/photo-1692071097529-320eb2b32292?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHx8&w=1000&q=80",
-          }}
+          source={{ uri: selectedMaterial.source }}
           width={Dimensions.get("window").width}
           style={[styles.image, { marginTop: insets.top }]}
         />
@@ -46,19 +53,18 @@ function NftDetail({ isMinting }) {
         </View>
         <Text style={styles.stateText}>🔥 Mint to put in the wallet</Text>
         <View style={styles.infoContainer}>
-          <InfoText
-            type={"Date and Time"}
-            content={"14-March-2023  03:12 AM"}
-          />
-          <InfoText type={"Device"} content={"iPhone XS"} />
+          <InfoText type={"Date and Time"} content={selectedMaterial.date} />
+          <InfoText type={"Device"} content={selectedMaterial.device} />
           <InfoText
             type={"Location"}
-            content={"Gangnam-daero, Gangnam-gu, Seoul"}
+            content={selectedMaterial.address}
             style={styles.lastInfoText}
           />
         </View>
       </ScrollView>
-      <WideButton style={styles.mintingButton}>Minting</WideButton>
+      {selectedMaterial.isMinting === "NONE" ? (
+        <WideButton style={styles.mintingButton}>Minting</WideButton>
+      ) : null}
     </View>
   );
 }

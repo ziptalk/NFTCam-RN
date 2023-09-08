@@ -9,11 +9,13 @@ import { useNavigation } from "@react-navigation/native";
 
 import MintingIcon from "./MintingIcon";
 
-function NftItem({ source, isMinting }) {
+function NftItem({ source, isMinting, materialId }) {
   const navigation = useNavigation();
 
   function itemPressHandler() {
-    navigation.navigate("NftDetail");
+    navigation.navigate("NftDetail", {
+      materialId: materialId,
+    });
   }
 
   return (
