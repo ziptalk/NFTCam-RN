@@ -18,7 +18,12 @@ export async function reissueToken(refreshToken) {
 }
 
 export async function fetchMaterials() {
-  const response = await axiosInstance.get(BASE_URL + "/material/list");
+  const response = await axiosInstance.get("/material/list");
+  return response.data.data;
+}
+
+export async function fetchMaterial(materialId) {
+  const response = await axiosInstance.get("/material/", materialId);
   return response.data.data;
 }
 
