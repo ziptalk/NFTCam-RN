@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import SmallIndex from "../components/UI/SmallIndex";
@@ -5,13 +6,26 @@ import { GlobalStyles } from "../constants/styles";
 import WideButton from "../components/UI/WideButton";
 
 function ChargePoint({ route, navigation }) {
+  const [chargeValue, setChargeValue] = useState("");
+
+  function inputChagneHandler(enteredValue) {
+    setChargeValue(enteredValue);
+  }
+
   return (
     <View style={styles.root}>
       <SmallIndex>CURRENT POINT</SmallIndex>
       <Text style={styles.currentPoint}>5,432 P</Text>
       <SmallIndex>POINTS TO CHARGE</SmallIndex>
       {/* <Text style={styles.chargePoint}>100 P</Text> */}
-      <TextInput maxLength={10} keyboardType="number-pad" autoFocus={true} />
+      <TextInput
+        style={styles.textInput}
+        maxLength={10}
+        keyboardType="number-pad"
+        autoFocus={true}
+        value={chargeValue}
+        onChangeText={inputChagneHandler}
+      />
       <WideButton style={styles.chargeButton}>Charge Point</WideButton>
     </View>
   );
@@ -35,7 +49,13 @@ const styles = StyleSheet.create({
     fontFamily: GlobalStyles.fonts.bold,
     color: "white",
   },
+  textInput: {
+    color: "white",
+    fontSize: 32,
+    fontFamily: GlobalStyles.fonts.bold,
+  },
   chargeButton: {
     marginTop: 18,
+    paddingHorizontal: 4,
   },
 });
