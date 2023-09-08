@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Dimensions, Text } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import CircleIconButton from "../components/UI/CircleIconButton";
 import { GlobalStyles } from "../constants/styles";
@@ -7,6 +9,17 @@ import WideButton from "../components/UI/WideButton";
 import InfoText from "../components/NftDetail/InfoText";
 
 function NftDetail({ isMinting }) {
+  const [isFetching, setIsFetching] = useState(true);
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {}, []);
+
+  async function getMaterial() {
+    setIsFetching(true);
+    try {
+    } catch (error) {}
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -15,11 +28,11 @@ function NftDetail({ isMinting }) {
             uri: "https://images.unsplash.com/photo-1692071097529-320eb2b32292?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHx8&w=1000&q=80",
           }}
           width={Dimensions.get("window").width}
-          style={styles.image}
+          style={[styles.image, { marginTop: insets.top }]}
         />
-        <View style={styles.buttonContainer}>
+        <View style={[styles.buttonContainer, { top: insets.top }]}>
           <CircleIconButton icon={"arrow-back"} backgroundColor={"#00000047"} />
-          <View style={[styles.towButtonContainer]}>
+          <View style={styles.towButtonContainer}>
             <CircleIconButton
               icon={"share-outline"}
               backgroundColor={"#00000047"}
@@ -61,7 +74,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: "absolute",
-    top: 37,
     padding: 20,
     width: "100%",
     flexDirection: "row",
