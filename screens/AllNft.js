@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState, useLayoutEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import IconTextButton from "../components/UI/IconTextButton";
 import NftItem from "../components/AllNft/NftItem";
 import IconButton from "../components/UI/IconButton";
 import { NftsContext } from "../store/nfts-context";
 import { fetchMaterials } from "../util/http";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import CreateButtonWithActionSheet from "../components/AllNft/CreateButtonWithActionSheet";
 
 function renderNftItem(itemData) {
   return <NftItem {...itemData.item} />;
@@ -46,9 +46,12 @@ function AllNft({ route, navigation }) {
     setIsFetching(false);
   }
 
-  const myPageButtonHandler = () => {
+  function myPageButtonHandler() {
     navigation.navigate("MyPage");
-  };
+  }
+
+  function imagePickerHandler() {}
+  function cameraHandler() {}
 
   if (isFetching) {
     return <LoadingOverlay />;
@@ -64,9 +67,11 @@ function AllNft({ route, navigation }) {
         numColumns={2}
         style={styles.list}
       />
-      <IconTextButton style={styles.createButton} icon="add" color={"white"}>
-        Create
-      </IconTextButton>
+      <CreateButtonWithActionSheet
+        buttonStyle={styles.createButton}
+        imagePickerHandler={imagePickerHandler}
+        cameraHandler={cameraHandler}
+      />
     </View>
   );
 }

@@ -3,9 +3,9 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { GlobalStyles } from "../../constants/styles";
 
-function IconTextButton({ children, icon, color, style }) {
+function IconTextButton({ children, icon, color, style, onPress }) {
   return (
-    <TouchableOpacity activeOpacity={0.8}>
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <View style={[styles.button, style]}>
         <Ionicons name={icon} size={22} color={color} />
         <Text style={styles.text}>{children}</Text>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    fontFamily: GlobalStyles.fonts.bold,
+    fontFamily: GlobalStyles.fonts.semibold,
     marginHorizontal: 6,
     color: "white",
   },
