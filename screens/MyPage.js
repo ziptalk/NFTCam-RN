@@ -74,6 +74,8 @@ function MyPage({ route, navigation }) {
       <Text style={styles.walletsLabel}>Wallets</Text>
       {/* TODO: account 있는지에 따라 아예 컴포넌트 분리해 표시해주기 
                 + 생성한 지갑 서버에 추가하기
+                + 지갑 표시 컴포넌트 분리해서 각각 복사할 수 있게 해야함
+                + 유저 커스텀 지갑 추가 가능하게 해야함
       */}
       <TouchableOpacity
         activeOpacity={0.7}
