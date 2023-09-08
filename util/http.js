@@ -5,25 +5,29 @@ export const BASE_URL = "https://www.nft-flex.com/api";
 
 export async function login() {
   const data = { uuid: "046AB16B-reactNative" };
-  const response = await axios.post(BASE_URL + "/auth/login", data);
+  const response = await axios.post(`${BASE_URL}/auth/login`, data);
 
   return response.data;
 }
 
 export async function reissueToken(refreshToken) {
   const data = { refreshToken: refreshToken };
-  const response = await axios.post(BASE_URL + "/auth/reissue", data);
+  const response = await axios.post(`${BASE_URL}/auth/reissue${data}`);
 
   return response.data;
 }
 
 export async function fetchMaterials() {
-  const response = await axiosInstance.get("/material/list");
+  const response = await axiosInstance.get(`/material/list`);
+
   return response.data.data;
 }
 
 export async function fetchMaterial(materialId) {
-  const response = await axiosInstance.get("/material/", materialId);
+  const response = await axiosInstance.get(
+    `${BASE_URL}/material/${materialId}`
+  );
+
   return response.data.data;
 }
 

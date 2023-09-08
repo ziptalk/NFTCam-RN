@@ -7,6 +7,7 @@ import CircleIconButton from "../components/UI/CircleIconButton";
 import { GlobalStyles } from "../constants/styles";
 import WideButton from "../components/UI/WideButton";
 import InfoText from "../components/NftDetail/InfoText";
+import { fetchMaterial } from "../util/http";
 import { NftsContext } from "../store/nfts-context";
 import StateText from "../components/NftDetail/StateText";
 
@@ -21,12 +22,20 @@ function NftDetail({ route, navigation }) {
     (nft) => nft.materialId === materialId
   );
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getMaterial();
+  }, []);
 
   async function getMaterial() {
     setIsFetching(true);
     try {
-    } catch (error) {}
+      selectedMaterial = await fetchMaterial(materialId);
+    } catch (error) {
+      console.log("Error! ", error);
+    }
+    setIsFetching(false);
+  }
+
   function backButtonHandler() {
     navigation.goBack();
   }
