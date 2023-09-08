@@ -12,21 +12,27 @@ function ChargePoint({ route, navigation }) {
     setChargeValue(enteredValue);
   }
 
+  function chargeButtonHandler() {}
+
   return (
     <View style={styles.root}>
       <SmallIndex>CURRENT POINT</SmallIndex>
       <Text style={styles.currentPoint}>5,432 P</Text>
       <SmallIndex>POINTS TO CHARGE</SmallIndex>
-      {/* <Text style={styles.chargePoint}>100 P</Text> */}
-      <TextInput
-        style={styles.textInput}
-        maxLength={10}
-        keyboardType="number-pad"
-        autoFocus={true}
-        value={chargeValue}
-        onChangeText={inputChagneHandler}
-      />
-      <WideButton style={styles.chargeButton}>Charge Point</WideButton>
+      <View style={styles.textInputContainer}>
+        <TextInput
+          style={[styles.textInput, styles.chargePoint]}
+          maxLength={10}
+          keyboardType="number-pad"
+          autoFocus={true}
+          value={chargeValue}
+          onChangeText={inputChagneHandler}
+        />
+        <Text style={styles.chargePoint}>P</Text>
+      </View>
+      <WideButton onPress={chargeButtonHandler} style={styles.chargeButton}>
+        Charge Point
+      </WideButton>
     </View>
   );
 }
@@ -44,15 +50,16 @@ const styles = StyleSheet.create({
     color: GlobalStyles.colors.gray200,
     marginBottom: 30,
   },
+  textInputContainer: {
+    flexDirection: "row",
+  },
   chargePoint: {
     fontSize: 32,
     fontFamily: GlobalStyles.fonts.bold,
     color: "white",
   },
   textInput: {
-    color: "white",
-    fontSize: 32,
-    fontFamily: GlobalStyles.fonts.bold,
+    marginRight: 4,
   },
   chargeButton: {
     marginTop: 18,
