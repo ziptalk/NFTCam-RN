@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState, useLayoutEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 import NftItem from "../components/AllNft/NftItem";
 import IconButton from "../components/UI/IconButton";
@@ -14,6 +15,7 @@ function renderNftItem(itemData) {
 
 function AllNft({ route, navigation }) {
   const [isFetching, setIsFetching] = useState(true);
+  const [image, setImage] = useState(null);
 
   const nftsCtx = useContext(NftsContext);
 
@@ -50,7 +52,24 @@ function AllNft({ route, navigation }) {
     navigation.navigate("MyPage");
   }
 
-  function imagePickerHandler() {}
+  async function pickImage() {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      //   allowsEditing: true,
+      exif: true,
+      quality: 1,
+    });
+    console.log(result.exif);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  }
+
+  function imagePickerHandler() {
+    pickImage();
+  }
+
   function cameraHandler() {}
 
   if (isFetching) {
