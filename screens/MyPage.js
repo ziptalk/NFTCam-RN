@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { createAccount, getAccount } from "@rly-network/mobile-sdk";
 import axios from "axios";
 
@@ -62,12 +68,21 @@ function MyPage({ route, navigation }) {
       */}
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={rlyAccount ? copyWalletAdress : createRlyAccount}
+        onPress={accountLoaded ? copyWalletAdress : createRlyAccount}
       >
         <View style={styles.connectButton}>
-          <Text style={styles.connectButtonText}>
-            {rlyAccount ? rlyAccount : "Connect Rally Protocol"}
-          </Text>
+          {accountLoaded ? (
+            <>
+              <Text style={styles.connectButtonText}>
+                {rlyAccount ? "Rally Account" : "Connect Rally Protocol"}
+              </Text>
+              {rlyAccount && (
+                <Text style={styles.walletAccountText}>{rlyAccount}</Text>
+              )}
+            </>
+          ) : (
+            <ActivityIndicator />
+          )}
         </View>
       </TouchableOpacity>
     </View>
@@ -117,5 +132,11 @@ const styles = StyleSheet.create({
   connectButtonText: {
     color: "white",
     fontSize: 16,
+  },
+  walletAccountText: {
+    color: GlobalStyles.colors.gray300,
+    fontSize: 12,
+    fontFamily: GlobalStyles.fonts.regular,
+    marginTop: 4,
   },
 });
