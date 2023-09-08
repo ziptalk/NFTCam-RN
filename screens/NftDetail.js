@@ -10,7 +10,6 @@ import InfoText from "../components/NftDetail/InfoText";
 import { NftsContext } from "../store/nfts-context";
 import StateText from "../components/NftDetail/StateText";
 
-function NftDetail({ isMinting }) {
 function NftDetail({ route, navigation }) {
   const [isFetching, setIsFetching] = useState(true);
 
@@ -28,6 +27,8 @@ function NftDetail({ route, navigation }) {
     setIsFetching(true);
     try {
     } catch (error) {}
+  function backButtonHandler() {
+    navigation.goBack();
   }
 
   return (
@@ -39,7 +40,11 @@ function NftDetail({ route, navigation }) {
           style={[styles.image, { marginTop: insets.top }]}
         />
         <View style={[styles.buttonContainer, { top: insets.top }]}>
-          <CircleIconButton icon={"arrow-back"} backgroundColor={"#00000047"} />
+          <CircleIconButton
+            icon={"arrow-back"}
+            backgroundColor={"#00000047"}
+            onPress={backButtonHandler}
+          />
           <View style={styles.towButtonContainer}>
             <CircleIconButton
               icon={"share-outline"}
