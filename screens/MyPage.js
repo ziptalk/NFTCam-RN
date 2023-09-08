@@ -7,23 +7,25 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { createAccount, getAccount } from "@rly-network/mobile-sdk";
-import axios from "axios";
 
 import SmallIndex from "../components/UI/SmallIndex";
 import { GlobalStyles } from "../constants/styles";
-import { BASE_URL } from "../util/http";
+import { fetchPoint, postWallet } from "../util/http";
 
 function MyPage({ route, navigation }) {
   const [accountLoaded, setAccountLoaded] = useState(false);
   const [rlyAccount, setRlyAccount] = useState();
+  const [pointValue, setPointValue] = useState("0");
+
+  useEffect(() => {
+    getPoint();
+  }, []);
 
   useEffect(() => {
     async function readAccount() {
       const account = await getAccount();
       console.log("user account", account);
-
       setAccountLoaded(true);
-
       if (account) {
         setRlyAccount(account);
       }
@@ -34,28 +36,32 @@ function MyPage({ route, navigation }) {
     }
   }, [accountLoaded]);
 
-  async function createWallet() {
-    const response = await axios.post(BASE_URL + "/wallet", {
-      walletName: "RallyProtocol",
-      walletAdress: rlyAccount,
-    });
+  async function getPoint() {
+    try {
+      const point = await fetchPoint();
+      setPointValue(point);
+    } catch (error) {
+      console.log("Error! ", error);
+    }
   }
 
   const createRlyAccount = async () => {
     const rlyAct = await createAccount();
     setRlyAccount(rlyAct);
+    postWallet();
   };
 
   const chargeButtonHandler = () => {
     navigation.navigate("ChargePoint");
   };
+
   const copyWalletAdress = () => {};
 
   return (
     <View style={styles.root}>
       <SmallIndex>CURRENT POINT</SmallIndex>
       <View style={styles.pointContainer}>
-        <Text style={styles.pointText}>5,432 P</Text>
+        <Text style={styles.pointText}>{pointValue} P</Text>
         <TouchableOpacity activeOpacity={0.7} onPress={chargeButtonHandler}>
           <View style={styles.chargeButton}>
             <Text style={styles.chargeButtonText}>CHARGE +</Text>

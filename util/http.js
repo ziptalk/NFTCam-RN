@@ -31,6 +31,30 @@ export async function fetchMaterial(materialId) {
   return response.data.data;
 }
 
+export async function postWallet(walletName, walletAddress) {
+  const data = {
+    walletName: walletName,
+    walletAddress: walletAddress,
+  };
+  const response = await axiosInstance.post(`/wallet`, data);
+
+  return response;
+}
+
+export async function fetchPoint() {
+  const response = await axiosInstance.get(`/point`);
+  console.log(response);
+
+  return response.data.point;
+}
+
+export async function patchPoint(point) {
+  const data = { point: point };
+  const response = await axiosInstance.patch(`/point`, data);
+
+  return response.data.point;
+}
+
 export async function storeExpense(expenseData) {
   const response = await axios.post(BASE_URL + "expenses.json", expenseData);
   const id = response.data.name;
