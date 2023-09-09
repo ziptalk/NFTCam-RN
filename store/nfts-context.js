@@ -12,7 +12,7 @@ function nftReducer(state, action) {
     case "SET":
       return action.payload;
     case "ADD":
-      return state;
+      return [action.payload, ...state];
     case "DELETE":
       return state;
     default:
