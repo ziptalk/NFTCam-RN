@@ -1,4 +1,6 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import axiosInstance from "./axiosInstance";
 import axiosMultipartInstance from "./axiosMultipartInstance";
 
@@ -20,6 +22,7 @@ export async function reissueToken(refreshToken) {
 
 export async function fetchMaterials() {
   const response = await axiosInstance.get(`/material/list`);
+  console.log(response);
 
   return response.data.data;
 }
@@ -33,10 +36,25 @@ export async function fetchMaterial(materialId) {
 }
 
 export async function postMaterialImage(formData) {
-  const response = await axiosMultipartInstance.post(
+  const token = await AsyncStorage.getItem("accessToken");
+  console.log("token: ", token);
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(
     `${BASE_URL}/material/save/image`,
-    formData
+    formData,
+    config
   );
+
+  //   const response = await axiosMultipartInstance.post(
+  //     `${BASE_URL}/material/save/image`,
+  //     formData
+  //   );
   console.log("postMaterialImage: ", response);
 
   return response.data.imageUrl;
