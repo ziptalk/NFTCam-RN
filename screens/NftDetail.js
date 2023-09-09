@@ -10,17 +10,19 @@ import InfoText from "../components/NftDetail/InfoText";
 import { fetchMaterial } from "../util/http";
 import { NftsContext } from "../store/nfts-context";
 import StateText from "../components/NftDetail/StateText";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function NftDetail({ route, navigation }) {
-  const [isFetching, setIsFetching] = useState(true);
-
   const nftsCtx = useContext(NftsContext);
-
-  const insets = useSafeAreaInsets();
   const materialId = route.params.materialId;
-  let selectedMaterial = nftsCtx.nfts.find(
+  const contextMaterial = nftsCtx.nfts.find(
     (nft) => nft.materialId === materialId
   );
+
+  const [isFetching, setIsFetching] = useState(true);
+  const [selectedMaterial, setSelectedMaterial] = useState(contextMaterial);
+
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     getMaterial();
@@ -29,7 +31,9 @@ function NftDetail({ route, navigation }) {
   async function getMaterial() {
     setIsFetching(true);
     try {
-      selectedMaterial = await fetchMaterial(materialId);
+      const fetchedMaterial = await fetchMaterial(materialId);
+      setSelectedMaterial(fetchedMaterial);
+      console.log("fetched selected material", selectedMaterial);
     } catch (error) {
       console.log("Error! ", error);
     }
@@ -38,6 +42,10 @@ function NftDetail({ route, navigation }) {
 
   function backButtonHandler() {
     navigation.goBack();
+  }
+
+  if (isFetching) {
+    return <LoadingOverlay />;
   }
 
   return (
