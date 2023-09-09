@@ -55,22 +55,52 @@ function AllNft({ route, navigation }) {
   async function pickImage() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      //   allowsEditing: true,
       exif: true,
       quality: 1,
     });
-    console.log(result.exif);
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+    if (result.assets && result.assets.length > 0) {
+      const selectedAsset = result.assets[0];
+
+      console.log("Selected Image URI:", selectedAsset.uri);
+
+      if (selectedAsset.exif) {
+        console.log("EXIF Data:", selectedAsset.exif);
+      }
+
+      setImage(selectedAsset.uri);
     }
   }
+
+  async function takePhoto() {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      exif: true,
+      quality: 1,
+    });
+
+    if (result.assets && result.assets.length > 0) {
+      const selectedAsset = result.assets[0];
+
+      console.log("Selected Image URI:", selectedAsset.uri);
+
+      if (selectedAsset.exif) {
+        console.log("EXIF Data:", selectedAsset.exif);
+      }
+
+      setImage(selectedAsset.uri);
+    }
+  }
+
+  async function postMaterial() {}
 
   function imagePickerHandler() {
     pickImage();
   }
 
-  function cameraHandler() {}
+  function cameraHandler() {
+    takePhoto();
+  }
 
   if (isFetching) {
     return <LoadingOverlay />;

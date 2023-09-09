@@ -29,10 +29,12 @@
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
-        },
+        }
+      ],
+      [
         "expo-camera",
         {
-          "cameraPermission": "Allow NFTCam to access your camera."
+          "cameraPermission": "Allow NFT Cam to access your camera."
         }
       ]
     ]
