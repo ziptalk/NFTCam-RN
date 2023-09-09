@@ -31,6 +31,36 @@ export async function fetchMaterial(materialId) {
   return response.data.data;
 }
 
+export async function postMaterialImage(formData) {
+  const response = await axiosInstance.post(
+    `${BASE_URL}/material/save/image`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data.imageUrl;
+}
+
+export async function postMaterialMetadata(imageUrl, exifData) {
+  const data = {
+    device: exifData.LensModel,
+    imageUrl: imageUrl,
+    takenAt: exifData.DateTimeOriginal,
+    latitude: exifData.GPSLatitude ?? "37.49654666666667",
+    longitude: exifData.GPSLongitude ?? "127.02825833333333",
+  };
+  const response = await axiosInstance.post(
+    `${BASE_URL}/material/save/content`,
+    data
+  );
+
+  return response.data;
+}
+
 export async function postWallet(walletName, walletAddress) {
   const data = {
     walletName: walletName,
@@ -53,35 +83,4 @@ export async function patchPoint(point) {
   const response = await axiosInstance.patch(`/point`, data);
 
   return response.data.point;
-}
-
-export async function storeExpense(expenseData) {
-  const response = await axios.post(BASE_URL + "expenses.json", expenseData);
-  const id = response.data.name;
-  return id;
-}
-
-export async function fetchExpenses() {
-  const response = await axios.get(BASE_URL + "expenses.json");
-  const expenses = [];
-
-  for (const key in response.data) {
-    const expenseObj = {
-      id: key,
-      amount: response.data[key].amount,
-      date: new Date(response.data[key].date),
-      description: response.data[key].description,
-    };
-    expenses.push(expenseObj);
-  }
-
-  return expenses;
-}
-
-export async function updateExpense(id, expeseData) {
-  return axios.put(BASE_URL + `expenses/${id}.json`, expeseData);
-}
-
-export async function deleteExpense(id) {
-  return axios.delete(BASE_URL + `expenses/${id}.json`);
 }
