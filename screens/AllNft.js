@@ -24,6 +24,8 @@ function AllNft({ route, navigation }) {
 
   const nftsCtx = useContext(NftsContext);
 
+  // TODO: 이미지 캐싱 처리하기
+
   useEffect(() => {
     getMaterials();
   }, []);
@@ -85,21 +87,32 @@ function AllNft({ route, navigation }) {
         console.log("EXIF Data:", selectedAsset.exif);
         setExifData(selectedAsset.exif);
       }
+      postMaterial();
+    } else {
+      setIsFetching(false);
     }
-    postMaterial();
   }
 
   async function postMaterial() {
     const formData = new FormData();
     formData.append("image", {
       uri: image,
-      type: "image/jpeg", // or 'image/png'
-      name: "testPhoto.jpg", // any name you wish
+      type: "image/jpeg",
+      name: "testPhoto.jpg",
     });
 
     try {
       const imageUrl = await postMaterialImage(formData);
-      const responseData = await postMaterialMetadata(imageUrl, exifData);
+      console.log("imageUrl: ", imageUrl);
+      const imageContent = {
+        device: exifData.LensModel,
+        imageUrl: imageUrl,
+        takenAt: formatDate(exifData.DateTimeOriginal),
+        latitude: exifData.GPSLatitude ?? "37.49654666666667",
+        longitude: exifData.GPSLongitude ?? "127.02825833333333",
+      };
+      console.log("imageContent: ", imageContent);
+      const responseData = await postMaterialMetadata(imageContent);
       const newMaterial = {
         materialId: responseData.materialId,
         source: imageUrl,
@@ -113,6 +126,12 @@ function AllNft({ route, navigation }) {
       console.log("Error uploading image:", error);
     }
     setIsFetching(false);
+  }
+
+  function formatDate(inputDate) {
+    const datePart = inputDate.split(" ")[0].replace(/:/g, "-");
+    const timePart = inputDate.split(" ")[1];
+    return datePart + " " + timePart;
   }
 
   function imagePickerHandler() {

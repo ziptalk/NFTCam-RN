@@ -37,7 +37,6 @@ export async function fetchMaterial(materialId) {
 
 export async function postMaterialImage(formData) {
   const token = await AsyncStorage.getItem("accessToken");
-  console.log("token: ", token);
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -60,18 +59,13 @@ export async function postMaterialImage(formData) {
   return response.data.imageUrl;
 }
 
-export async function postMaterialMetadata(imageUrl, exifData) {
-  const data = {
-    device: exifData.LensModel,
-    imageUrl: imageUrl,
-    takenAt: exifData.DateTimeOriginal,
-    latitude: exifData.GPSLatitude ?? "37.49654666666667",
-    longitude: exifData.GPSLongitude ?? "127.02825833333333",
-  };
+export async function postMaterialMetadata(data) {
   const response = await axiosInstance.post(
     `${BASE_URL}/material/save/content`,
     data
   );
+
+  console.log("postMaterialMetadata: ", response);
 
   return response.data;
 }
