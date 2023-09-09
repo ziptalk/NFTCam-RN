@@ -1,5 +1,6 @@
 import axios from "axios";
 import axiosInstance from "./axiosInstance";
+import axiosMultipartInstance from "./axiosMultipartInstance";
 
 export const BASE_URL = "https://www.nft-flex.com/api";
 
@@ -32,15 +33,11 @@ export async function fetchMaterial(materialId) {
 }
 
 export async function postMaterialImage(formData) {
-  const response = await axiosInstance.post(
+  const response = await axiosMultipartInstance.post(
     `${BASE_URL}/material/save/image`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
+    formData
   );
+  console.log("postMaterialImage: ", response);
 
   return response.data.imageUrl;
 }
