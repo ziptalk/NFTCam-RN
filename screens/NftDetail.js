@@ -20,6 +20,7 @@ function NftDetail({ route, navigation }) {
   );
 
   const [isFetching, setIsFetching] = useState(true);
+  // TODO: selected material context로 만들어서 민팅화면, 홈화면에서 mintState 접근할 수 있게 해주기
   const [selectedMaterial, setSelectedMaterial] = useState(contextMaterial);
 
   const insets = useSafeAreaInsets();
