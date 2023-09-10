@@ -50,9 +50,16 @@ export async function postMaterialImage(formData) {
     config
   );
 
-  //   const response = await axiosMultipartInstance.post(
+  // TODO: 이거 왜 인스턴스 못 쓰는지 확인해보기
+  //   const response = await axiosInstance.post(
   //     `${BASE_URL}/material/save/image`,
-  //     formData
+  //     formData,
+  //     {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         //  Authorization: `Bearer ${token}`,
+  //       },
+  //     }
   //   );
   console.log("postMaterialImage: ", response);
 
@@ -64,8 +71,17 @@ export async function postMaterialMetadata(data) {
     `${BASE_URL}/material/save/content`,
     data
   );
-
   console.log("postMaterialMetadata: ", response);
+
+  return response.data;
+}
+
+export async function patchMintingMaterial(materialId, nftData) {
+  const response = await axiosInstance.patch(
+    `/material/mint/${materialId}`,
+    nftData
+  );
+  console.log(response);
 
   return response.data;
 }
