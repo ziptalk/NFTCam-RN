@@ -1,7 +1,9 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 
 export const NftsContext = createContext({
   nfts: [],
+  selectedNft: null,
+  setSelection: () => {},
   setNfts: () => {},
   addNft: () => {},
   deleteNft: () => {},
@@ -22,6 +24,11 @@ function nftReducer(state, action) {
 
 function NftsContextProvider({ children }) {
   const [nftState, dispatch] = useReducer(nftReducer);
+  const [selectedNft, setSelectedNft] = useState();
+
+  function setSelection(materialId) {
+    setSelectedNft(nftState.find((nft) => nft.materialId === materialId));
+  }
 
   function setNfts(nfts) {
     dispatch({ type: "SET", payload: nfts });
@@ -37,6 +44,8 @@ function NftsContextProvider({ children }) {
 
   const value = {
     nfts: nftState,
+    selectedNft: selectedNft,
+    setSelection: setSelection,
     setNfts: setNfts,
     addNft: addNft,
     deleteNft: deleteNft,
