@@ -22,7 +22,7 @@ export async function reissueToken(refreshToken) {
 
 export async function fetchMaterials() {
   const response = await axiosInstance.get(`/material/list`);
-  console.log(response);
+  console.log("fetchMaterials", response);
 
   return response.data.data;
 }
@@ -57,11 +57,11 @@ export async function postMaterialImage(formData) {
   //     {
   //       headers: {
   //         "Content-Type": "multipart/form-data",
-  //         //  Authorization: `Bearer ${token}`,
+  //         Authorization: `Bearer ${token}`,
   //       },
   //     }
   //   );
-  console.log("postMaterialImage: ", response);
+  //   console.log("postMaterialImage: ", response);
 
   return response.data.imageUrl;
 }
@@ -81,7 +81,7 @@ export async function patchMintingMaterial(materialId, nftData) {
     `/material/mint/${materialId}`,
     nftData
   );
-  console.log(response);
+  console.log("patchMintingMaterial", response);
 
   return response.data;
 }
@@ -92,13 +92,21 @@ export async function postWallet(walletName, walletAddress) {
     walletAddress: walletAddress,
   };
   const response = await axiosInstance.post(`/wallet`, data);
+  console.log("postWallet", response);
 
-  return response;
+  return response.data;
+}
+
+export async function fetchWallet() {
+  const response = await axiosInstance.get(`/wallet`);
+  console.log("fetchWallet", response);
+
+  return response.data.data;
 }
 
 export async function fetchPoint() {
   const response = await axiosInstance.get(`/point`);
-  console.log(response);
+  console.log("fetchPoint", response);
 
   return response.data.point;
 }
