@@ -32,13 +32,14 @@ axiosInstance.interceptors.response.use(
             refreshToken: refreshToken,
           }
         );
+        ㅋ;
         AsyncStorage.setItem("accessToken", response.data.accessToken);
         AsyncStorage.setItem("refreshToken", response.data.refreshToken);
 
         return response.data.accessToken;
       }
 
-      const accessToken = reissue();
+      const accessToken = await reissue();
 
       error.config.headers = {
         "Content-Type": "application/json",
