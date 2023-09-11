@@ -26,6 +26,7 @@ function NftDetail({ route, navigation }) {
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
+    console.log("nftCtx: ", nftsCtx.nfts);
     getMaterial();
   }, []);
 
@@ -36,13 +37,19 @@ function NftDetail({ route, navigation }) {
       setSelectedMaterial(fetchedMaterial);
       console.log("fetched selected material", selectedMaterial);
     } catch (error) {
-      console.log("Error! ", error);
+      console.log("Error! ", error.response);
     }
     setIsFetching(false);
   }
 
   function backButtonHandler() {
     navigation.goBack();
+  }
+
+  function mintingButtonHandler() {
+    navigation.navigate("MintingNft", {
+      materialId: materialId,
+    });
   }
 
   if (isFetching) {
@@ -87,7 +94,9 @@ function NftDetail({ route, navigation }) {
         </View>
       </ScrollView>
       {selectedMaterial.isMinting === "NONE" ? (
-        <WideButton style={styles.mintingButton}>Minting</WideButton>
+        <WideButton onPress={mintingButtonHandler} style={styles.mintingButton}>
+          Minting
+        </WideButton>
       ) : null}
     </View>
   );
