@@ -50,7 +50,7 @@ function AllNft({ route, navigation }) {
       const materials = await fetchMaterials();
       nftsCtx.setNfts(materials);
     } catch (error) {
-      console.log("Error! ", error);
+      console.log("Error! ", error.response);
     }
     setIsFetching(false);
   }
@@ -103,7 +103,7 @@ function AllNft({ route, navigation }) {
 
     try {
       const imageUrl = await postMaterialImage(formData);
-      console.log("imageUrl: ", imageUrl);
+      //   console.log("imageUrl: ", imageUrl);
       const imageContent = {
         device: exifData.LensModel,
         imageUrl: imageUrl,
@@ -111,7 +111,7 @@ function AllNft({ route, navigation }) {
         latitude: exifData.GPSLatitude ?? "37.49654666666667",
         longitude: exifData.GPSLongitude ?? "127.02825833333333",
       };
-      console.log("imageContent: ", imageContent);
+      //   console.log("imageContent: ", imageContent);
       const responseData = await postMaterialMetadata(imageContent);
       const newMaterial = {
         materialId: responseData.materialId,
@@ -123,7 +123,7 @@ function AllNft({ route, navigation }) {
 
       console.log("Image uploaded! materialId: ", responseData.materialId);
     } catch (error) {
-      console.log("Error uploading image:", error);
+      console.log("Error uploading image:", error.response);
     }
     setIsFetching(false);
   }

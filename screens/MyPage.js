@@ -10,17 +10,22 @@ import { createAccount, getAccount } from "@rly-network/mobile-sdk";
 
 import SmallIndex from "../components/UI/SmallIndex";
 import { GlobalStyles } from "../constants/styles";
-import { fetchPoint, postWallet } from "../util/http";
+import { fetchPoint, fetchWallet, postWallet } from "../util/http";
 import { PointContext } from "../store/point-context";
+import { WalletContext } from "../store/wallet-context";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function MyPage({ route, navigation }) {
+  const [isFetching, setIsFetching] = useState(true);
   const [accountLoaded, setAccountLoaded] = useState(false);
   const [rlyAccount, setRlyAccount] = useState();
 
   const pointCtx = useContext(PointContext);
+  const walletCtx = useContext(WalletContext);
 
   useEffect(() => {
     getPoint();
+    getWallet();
   }, []);
 
   useEffect(() => {
@@ -30,6 +35,14 @@ function MyPage({ route, navigation }) {
       setAccountLoaded(true);
       if (account) {
         setRlyAccount(account);
+        const rlyWalletData = [
+          {
+            walletId: 999,
+            walletName: "Rally Account",
+            walletAddress: rlyAccount,
+          },
+        ];
+        walletCtx.setWallet(rlyWalletData);
       }
     }
 
@@ -40,18 +53,32 @@ function MyPage({ route, navigation }) {
 
   async function getPoint() {
     try {
+      setIsFetching(true);
       const point = await fetchPoint();
-      //   setPointValue(point);
       pointCtx.setPoint(point);
     } catch (error) {
-      console.log("Error! ", error);
+      console.log("Error! ", error.response);
     }
+    setIsFetching(false);
+  }
+
+  async function getWallet() {
+    try {
+      setIsFetching(true);
+      const walletList = await fetchWallet();
+      walletCtx.setWallet(walletList);
+      console.log("walletCtx: ", walletCtx.wallets);
+    } catch (error) {
+      console.log("Error: ", error.response);
+    }
+    setIsFetching(false);
   }
 
   const createRlyAccount = async () => {
     const rlyAct = await createAccount();
     setRlyAccount(rlyAct);
-    postWallet();
+    const newWallet = await postWallet();
+    walletCtx.addWallet(newWallet);
   };
 
   const chargeButtonHandler = () => {
@@ -59,6 +86,10 @@ function MyPage({ route, navigation }) {
   };
 
   const copyWalletAdress = () => {};
+
+  if (isFetching) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.root}>
@@ -77,7 +108,19 @@ function MyPage({ route, navigation }) {
                 + 지갑 표시 컴포넌트 분리해서 각각 복사할 수 있게 해야함
                 + 유저 커스텀 지갑 추가 가능하게 해야함
       */}
-      <TouchableOpacity
+
+      <TouchableOpacity activeOpacity={0.7} onPress={copyWalletAdress}>
+        <View style={styles.connectButton}>
+          <Text style={styles.connectButtonText}>
+            {walletCtx.wallets[0].walletName}
+          </Text>
+          <Text style={styles.walletAccountText}>
+            {walletCtx.wallets[0].walletAddress}
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      {/* <TouchableOpacity
         activeOpacity={0.7}
         onPress={accountLoaded ? copyWalletAdress : createRlyAccount}
       >
@@ -95,7 +138,7 @@ function MyPage({ route, navigation }) {
             <ActivityIndicator />
           )}
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }
