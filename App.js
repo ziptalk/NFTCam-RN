@@ -13,6 +13,7 @@ import ChargePoint from "./screens/ChargePoint";
 import NftsContextProvider from "./store/nfts-context";
 import { login } from "./util/http";
 import PointContextProvider from "./store/point-context";
+import WalletContextProvider from "./store/wallet-context";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -45,54 +46,56 @@ export default function App() {
       <StatusBar style="light" />
       <NftsContextProvider>
         <PointContextProvider>
-          <ActionSheetProvider>
-            <NavigationContainer>
-              <Stack.Navigator
-                initialRouteName="AllNft"
-                screenOptions={{
-                  headerStyle: { backgroundColor: "#1D1D1D" },
-                  headerTitleStyle: { color: "white" },
-                  contentStyle: { backgroundColor: "#151515" },
-                }}
-              >
-                <Stack.Screen
-                  name="AllNft"
-                  component={AllNft}
-                  options={{
-                    title: "Home",
+          <WalletContextProvider>
+            <ActionSheetProvider>
+              <NavigationContainer>
+                <Stack.Navigator
+                  initialRouteName="AllNft"
+                  screenOptions={{
+                    headerStyle: { backgroundColor: "#1D1D1D" },
+                    headerTitleStyle: { color: "white" },
+                    contentStyle: { backgroundColor: "#151515" },
                   }}
-                />
-                <Stack.Screen
-                  name="NftDetail"
-                  component={NftDetail}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="MintingNft"
-                  component={MintingNft}
-                  options={{
-                    title: "Minting",
-                  }}
-                />
-                <Stack.Screen
-                  name="MyPage"
-                  component={MyPage}
-                  options={{
-                    title: "My Page",
-                  }}
-                />
-                <Stack.Screen
-                  name="ChargePoint"
-                  component={ChargePoint}
-                  options={{
-                    title: "Charge Point",
-                  }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </ActionSheetProvider>
+                >
+                  <Stack.Screen
+                    name="AllNft"
+                    component={AllNft}
+                    options={{
+                      title: "Home",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="NftDetail"
+                    component={NftDetail}
+                    options={{
+                      headerShown: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="MintingNft"
+                    component={MintingNft}
+                    options={{
+                      title: "Minting",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="MyPage"
+                    component={MyPage}
+                    options={{
+                      title: "My Page",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ChargePoint"
+                    component={ChargePoint}
+                    options={{
+                      title: "Charge Point",
+                    }}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </ActionSheetProvider>
+          </WalletContextProvider>
         </PointContextProvider>
       </NftsContextProvider>
     </>
