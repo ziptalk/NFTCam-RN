@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View, Dimensions, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Dimensions } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 

@@ -14,11 +14,9 @@ function CircleIconButton({
     buttonStyles.push(style);
   }
   if (backgroundColor) {
-    // TODO: 이거 그냥 object 형식으로 넣어도 동작하는지 확인하기
-    const backgroundColorStyle = StyleSheet.create({
+    buttonStyles.push({
       backgroundColor: backgroundColor,
     });
-    buttonStyles.push(backgroundColorStyle);
   }
 
   return (
