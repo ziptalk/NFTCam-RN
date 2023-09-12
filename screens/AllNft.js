@@ -107,7 +107,7 @@ function AllNft({ route, navigation }) {
       const imageContent = {
         device: exifData.LensModel,
         imageUrl: imageUrl,
-        takenAt: formatDate(exifData.DateTimeOriginal),
+        takenAt: getFormattedDate(exifData.DateTimeOriginal),
         latitude: exifData.GPSLatitude ?? "37.49654666666667",
         longitude: exifData.GPSLongitude ?? "127.02825833333333",
       };
@@ -128,7 +128,7 @@ function AllNft({ route, navigation }) {
     setIsFetching(false);
   }
 
-  function formatDate(inputDate) {
+  function getFormattedDate(inputDate) {
     const datePart = inputDate.split(" ")[0].replace(/:/g, "-");
     const timePart = inputDate.split(" ")[1];
     return datePart + " " + timePart;
