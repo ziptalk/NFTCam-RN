@@ -1,11 +1,14 @@
 import { createContext, useReducer, useState } from "react";
+import { NETWORKS } from "../screens/SelectNetwork";
 
 export const WalletContext = createContext({
   wallets: [],
-  selectedWallet: null,
   setWallet: () => {},
   addWallet: () => {},
   deleteWallet: () => {},
+  selectedWallet: null,
+  selectedNetwork: null,
+  selectNetwork: (id) => {},
 });
 
 function walletReducer(state, action) {
@@ -24,12 +27,6 @@ function walletReducer(state, action) {
 function WalletContextProvider({ children }) {
   const [walletState, dispatch] = useReducer(walletReducer);
 
-  const [selectedWallet, setSelectedWallet] = useState();
-
-  function setSelection(walletId) {
-    // setSelectedWallet()
-  }
-
   function setWallet(wallets) {
     dispatch({ type: "SET", payload: wallets });
   }
@@ -42,13 +39,21 @@ function WalletContextProvider({ children }) {
     dispatch({ type: "DEL", payload: wallet });
   }
 
+  const [selectedWallet, setSelectedWallet] = useState();
+  const [selectedNetwork, setSelectedNetwork] = useState();
+
+  function selectNetwork(id) {
+    setSelectedNetwork(NETWORKS.filter((network) => network.identifier === id));
+  }
+
   const value = {
     wallets: walletState,
-    selectedWallet: selectedWallet,
-    setSelection: setSelection,
     setWallet: setWallet,
     addWallet: addWallet,
     deleteWallet: deleteWallet,
+    selectedWallet: selectedWallet,
+    selectedNetwork: selectedNetwork,
+    selectNetwork: selectNetwork,
   };
 
   return (
