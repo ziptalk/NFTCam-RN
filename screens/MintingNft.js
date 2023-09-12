@@ -1,22 +1,36 @@
-import { useContext, useState } from "react";
-import { StyleSheet, TextInput, Text, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
+import { Ionicons } from "@expo/vector-icons";
 
 import WideButton from "../components/UI/WideButton";
 import { patchMintingMaterial } from "../util/http";
 import { GlobalStyles } from "../constants/styles";
 import { NftsContext } from "../store/nfts-context";
 import { WalletContext } from "../store/wallet-context";
+import { fetchWallet } from "../util/http";
 
 function MintingNft({ route, navigation }) {
+  const walletCtx = useContext(WalletContext);
   const nftsCtx = useContext(NftsContext);
+  const [titleValue, setTitleValue] = useState("");
+  const [isFetching, setIsFetching] = useState(true);
+
   const materialId = route.params.materialId;
   const contextMaterial = nftsCtx.nfts.find(
     (nft) => nft.materialId === materialId
   );
-  const walletCtx = useContext(WalletContext);
 
-  const [titleValue, setTitleValue] = useState("");
+  useEffect(() => {
+    getWallet();
+  }, []);
 
   function titleInputChangeHandler(enteredValue) {
     setTitleValue(enteredValue);
@@ -26,6 +40,18 @@ function MintingNft({ route, navigation }) {
     navigation.goBack();
   }
 
+  async function getWallet() {
+    try {
+      setIsFetching(true);
+      const walletList = await fetchWallet();
+      walletCtx.setWallet(walletList);
+      console.log("walletCtx: ", walletCtx.wallets);
+    } catch (error) {
+      console.log("Error: ", error.response);
+    }
+    setIsFetching(false);
+  }
+
   async function mintMaterial() {
     const nftData = {
       title: titleValue,
@@ -33,6 +59,14 @@ function MintingNft({ route, navigation }) {
       network: "MUMBAI",
     };
     const response = await patchMintingMaterial();
+  }
+
+  function getFormattedAddress(address) {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  }
+
+  function selectNetworkHandler() {
+    navigation.navigate("SelectNetwork");
   }
 
   // TODO: 키보드에따라 민팅 버튼 높이 조정하기
@@ -59,19 +93,31 @@ function MintingNft({ route, navigation }) {
             Wallet
           </Text>
           <Text style={[styles.optionText, styles.optionContentText]}>
-            {/* {walletCtx.wallets[0].walletAddress} */}
+            {getFormattedAddress(walletCtx.wallets[0].walletAddress)}
           </Text>
         </View>
-        <View style={styles.block}>
+        <TouchableOpacity
+          style={styles.block}
+          activeOpacity={0.6}
+          onPress={selectNetworkHandler}
+        >
           <Text style={[styles.optionText, styles.optionTitleText]}>
             Network
           </Text>
-          <Text style={[styles.optionText, styles.optionContentText]}>
-            Polygon Mumbai Testnet
-          </Text>
-        </View>
+          <View style={styles.optionContentView}>
+            <Text style={[styles.optionText, styles.optionContentText]}>
+              Polygon Mumbai Testnet
+            </Text>
+            <Ionicons
+              name="chevron-forward"
+              color={GlobalStyles.colors.gray200}
+              size={16}
+              style={styles.optionContentIcon}
+            />
+          </View>
+        </TouchableOpacity>
         <AutoHeightImage
-          source={{ uri: selectedMaterial.source }}
+          source={{ uri: contextMaterial.source }}
           width={Dimensions.get("window").width - 36}
         />
       </View>
@@ -115,6 +161,13 @@ const styles = StyleSheet.create({
   },
   optionContentText: {
     color: GlobalStyles.colors.gray200,
+  },
+  optionContentView: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  optionContentIcon: {
+    marginLeft: 4,
   },
   mintingButton: {
     marginHorizontal: 18,
