@@ -76,8 +76,11 @@ function MyPage({ route, navigation }) {
 
   const createRlyAccount = async () => {
     const rlyAct = await createAccount();
-    setRlyAccount(rlyAct);
-    const newWallet = await postWallet();
+    const rlyWalletdata = {
+      walletName: "Rally Account",
+      walletAddress: rlyAct,
+    };
+    const newWallet = await postWallet(rlyWalletdata);
     walletCtx.addWallet(newWallet);
   };
 
