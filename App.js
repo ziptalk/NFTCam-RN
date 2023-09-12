@@ -14,6 +14,8 @@ import NftsContextProvider from "./store/nfts-context";
 import { login } from "./util/http";
 import PointContextProvider from "./store/point-context";
 import WalletContextProvider from "./store/wallet-context";
+import SelectNetwork from "./screens/SelectNetwork";
+import SelectWallet from "./screens/SelectWallet";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -90,6 +92,20 @@ export default function App() {
                     component={ChargePoint}
                     options={{
                       title: "Charge Point",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="SelectWallet"
+                    component={SelectWallet}
+                    options={{
+                      title: "Wallet",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="SelectNetwork"
+                    component={SelectNetwork}
+                    options={{
+                      title: "Network",
                     }}
                   />
                 </Stack.Navigator>
