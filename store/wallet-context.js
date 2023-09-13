@@ -1,5 +1,22 @@
 import { createContext, useReducer, useState } from "react";
-import { NETWORKS } from "../screens/SelectNetwork";
+
+import EthereumLogo from "../assets/icons/ethereum.svg";
+import PolygonLogo from "../assets/icons/polygon.svg";
+
+export const NETWORKS = [
+  {
+    displayName: "Ethereum Sepolia Testnet",
+    gasFee: 200,
+    identifier: "SEPOLIA",
+    icon: EthereumLogo,
+  },
+  {
+    displayName: "Polygon Mumbai Testnet",
+    gasFee: 200,
+    identifier: "MUMBAI",
+    icon: PolygonLogo,
+  },
+];
 
 export const WalletContext = createContext({
   wallets: [],
@@ -25,7 +42,9 @@ function walletReducer(state, action) {
 }
 
 function WalletContextProvider({ children }) {
-  const [walletState, dispatch] = useReducer(walletReducer);
+  const [walletState, dispatch] = useReducer(walletReducer, [
+    { walletName: "", walletAddress: "" },
+  ]);
 
   function setWallet(wallets) {
     dispatch({ type: "SET", payload: wallets });
@@ -40,7 +59,9 @@ function WalletContextProvider({ children }) {
   }
 
   const [selectedWallet, setSelectedWallet] = useState();
-  const [selectedNetwork, setSelectedNetwork] = useState();
+  const [selectedNetwork, setSelectedNetwork] = useState([
+    { walletName: "", walletAddress: "" },
+  ]);
 
   function selectNetwork(id) {
     setSelectedNetwork(NETWORKS.filter((network) => network.identifier === id));

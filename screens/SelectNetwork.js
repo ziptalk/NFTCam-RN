@@ -1,25 +1,17 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-import EthereumLogo from "../assets/icons/ethereum.svg";
-import PolygonLogo from "../assets/icons/polygon.svg";
 import { GlobalStyles } from "../constants/styles";
-
-export const NETWORKS = [
-  {
-    name: "Ethereum Sepolia Testnet",
-    gasFee: 200,
-    identifier: "SEPOLIA",
-    icon: EthereumLogo,
-  },
-  {
-    name: "Polygon Mumbai Testnet",
-    gasFee: 200,
-    identifier: "MUMBAI",
-    icon: PolygonLogo,
-  },
-];
+import { useContext } from "react";
+import { NETWORKS, WalletContext } from "../store/wallet-context";
 
 function SelectNetwork({ route, navigation }) {
+  const walletCtx = useContext(WalletContext);
+
+  function selectWalletHandler(networkId) {
+    walletCtx.selectNetwork(networkId);
+    navigation.goBack();
+  }
+
   return (
     <View style={styles.root}>
       <Text style={styles.labelText}>GAS FEES</Text>
@@ -27,12 +19,15 @@ function SelectNetwork({ route, navigation }) {
         <TouchableOpacity
           style={styles.networkContainer}
           key={network.identifier}
+          onPress={() => {
+            selectWalletHandler(network.identifier);
+          }}
         >
           <View style={styles.networkIcon}>
             <network.icon width={20} height={20} />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.networkText}>{network.name}</Text>
+            <Text style={styles.networkText}>{network.displayName}</Text>
             <Text style={styles.networkText}>{network.gasFee} P</Text>
           </View>
         </TouchableOpacity>
