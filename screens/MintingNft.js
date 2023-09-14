@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
+  ScrollView,
   TextInput,
   Text,
   View,
@@ -22,13 +23,14 @@ function MintingNft({ route, navigation }) {
   const nftsCtx = useContext(NftsContext);
   const [titleValue, setTitleValue] = useState("");
   const [isFetching, setIsFetching] = useState(true);
-
+  const [isValid, setIsValid] = useState(false);
   const materialId = route.params.materialId;
   const contextMaterial = nftsCtx.nfts.find(
     (nft) => nft.materialId === materialId
   );
 
   useEffect(() => {
+    console.log("wallet context: ", walletCtx);
     getWallet();
   }, []);
 
@@ -41,10 +43,10 @@ function MintingNft({ route, navigation }) {
   }
 
   async function getWallet() {
+    setIsFetching(true);
     try {
-      setIsFetching(true);
-      const walletList = await fetchWallet();
-      walletCtx.setWallet(walletList);
+      const walletListData = await fetchWallet();
+      walletCtx.setWallet(walletListData);
       console.log("walletCtx: ", walletCtx.wallets);
     } catch (error) {
       console.log("Error: ", error.response);
@@ -75,7 +77,7 @@ function MintingNft({ route, navigation }) {
 
   return (
     <View style={styles.root}>
-      <View style={styles.formContainer}>
+      <ScrollView style={styles.formContainer}>
         <View style={[styles.block, styles.titleInputContainer]}>
           <TextInput
             style={[
@@ -97,8 +99,8 @@ function MintingNft({ route, navigation }) {
           </Text>
         </View>
         <TouchableOpacity
-          style={styles.block}
           activeOpacity={0.6}
+          style={styles.block}
           onPress={selectNetworkHandler}
         >
           <Text style={[styles.optionText, styles.optionTitleText]}>
@@ -106,7 +108,7 @@ function MintingNft({ route, navigation }) {
           </Text>
           <View style={styles.optionContentView}>
             <Text style={[styles.optionText, styles.optionContentText]}>
-              Polygon Mumbai Testnet
+              {walletCtx.selectedNetwork[0].displayName}
             </Text>
             <Ionicons
               name="chevron-forward"
@@ -119,10 +121,13 @@ function MintingNft({ route, navigation }) {
         <AutoHeightImage
           source={{ uri: contextMaterial.source }}
           width={Dimensions.get("window").width - 36}
+          style={styles.image}
         />
-      </View>
+      </ScrollView>
       {titleValue && (
-        <WideButton onPress={mintingButtonHandler}>Checkout 200P</WideButton>
+        <WideButton style={styles.mintingButton} onPress={mintingButtonHandler}>
+          Checkout 200P
+        </WideButton>
       )}
     </View>
   );
@@ -133,7 +138,7 @@ export default MintingNft;
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    padding: 15,
+    paddingHorizontal: 15,
   },
   formContainer: {
     padding: 3,
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   titleInputContainer: {
-    marginTop: 10,
+    marginTop: 24,
   },
   titleInput: {
     width: "100%",
@@ -169,7 +174,12 @@ const styles = StyleSheet.create({
   optionContentIcon: {
     marginLeft: 4,
   },
+  image: {
+    marginBottom: 100,
+  },
   mintingButton: {
     marginHorizontal: 18,
+    position: "absolute",
+    bottom: 30,
   },
 });
