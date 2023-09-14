@@ -19,8 +19,6 @@ function renderNftItem(itemData) {
 
 function AllNft({ route, navigation }) {
   const [isFetching, setIsFetching] = useState(true);
-  const [image, setImage] = useState(null);
-  const [exifData, setExifData] = useState(null);
 
   const nftsCtx = useContext(NftsContext);
 
@@ -79,24 +77,21 @@ function AllNft({ route, navigation }) {
     setIsFetching(true);
     if (assets && assets.length > 0) {
       const selectedAsset = assets[0];
-
       console.log("Selected Image URI:", selectedAsset.uri);
-      setImage(selectedAsset.uri);
 
       if (selectedAsset.exif) {
         console.log("EXIF Data:", selectedAsset.exif);
-        setExifData(selectedAsset.exif);
       }
-      postMaterial();
+      postMaterial(selectedAsset);
     } else {
       setIsFetching(false);
     }
   }
 
-  async function postMaterial() {
+  async function postMaterial(selectedAsset) {
     const formData = new FormData();
     formData.append("image", {
-      uri: image,
+      uri: selectedAsset.uri,
       type: "image/jpeg",
       name: "testPhoto.jpg",
     });
@@ -105,11 +100,11 @@ function AllNft({ route, navigation }) {
       const imageUrl = await postMaterialImage(formData);
       //   console.log("imageUrl: ", imageUrl);
       const imageContent = {
-        device: exifData.LensModel,
+        device: selectedAsset.exif.LensModel,
         imageUrl: imageUrl,
-        takenAt: getFormattedDate(exifData.DateTimeOriginal),
-        latitude: exifData.GPSLatitude ?? "37.49654666666667",
-        longitude: exifData.GPSLongitude ?? "127.02825833333333",
+        takenAt: getFormattedDate(selectedAsset.exif.DateTimeOriginal),
+        latitude: selectedAsset.exif.GPSLatitude ?? "37.49654666666667",
+        longitude: selectedAsset.exif.GPSLongitude ?? "127.02825833333333",
       };
       //   console.log("imageContent: ", imageContent);
       const responseData = await postMaterialMetadata(imageContent);
