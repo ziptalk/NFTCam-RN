@@ -30,12 +30,6 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ],
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow NFT Cam to access your camera."
-        }
       ]
     ]
   }
