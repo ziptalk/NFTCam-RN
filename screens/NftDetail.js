@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Dimensions } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { atom, useRecoilState } from "recoil";
 
 import CircleIconButton from "../components/UI/CircleIconButton";
 import { GlobalStyles } from "../constants/styles";
@@ -12,6 +13,11 @@ import { NftsContext } from "../store/nfts-context";
 import StateText from "../components/NftDetail/StateText";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 
+export const mintState = atom({
+  key: "mintState",
+  default: "NONE",
+});
+
 function NftDetail({ route, navigation }) {
   const nftsCtx = useContext(NftsContext);
   const materialId = route.params.materialId;
@@ -19,8 +25,9 @@ function NftDetail({ route, navigation }) {
     (nft) => nft.materialId === materialId
   );
 
-  const [isFetching, setIsFetching] = useState(true);
   // TODO: selected material context로 만들어서 민팅화면, 홈화면에서 mintState 접근할 수 있게 해주기
+  const [isMinting, setIsMinting] = useRecoilState(mintState);
+  const [isFetching, setIsFetching] = useState(true);
   const [selectedMaterial, setSelectedMaterial] = useState(contextMaterial);
 
   const insets = useSafeAreaInsets();
@@ -35,6 +42,7 @@ function NftDetail({ route, navigation }) {
     try {
       const fetchedMaterial = await fetchMaterial(materialId);
       setSelectedMaterial(fetchedMaterial);
+      setIsMinting(fetchedMaterial.isMinting);
       console.log("fetched selected material", selectedMaterial);
     } catch (error) {
       console.log("Error! ", error.response);
@@ -93,7 +101,7 @@ function NftDetail({ route, navigation }) {
           />
         </View>
       </ScrollView>
-      {selectedMaterial.isMinting === "NONE" ? (
+      {isMinting === "NONE" ? (
         <WideButton onPress={mintingButtonHandler} style={styles.mintingButton}>
           Minting
         </WideButton>
