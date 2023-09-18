@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View, Dimensions } from "react-native";
-import AutoHeightImage from "react-native-auto-height-image";
+import { ScrollView, StyleSheet, View, Dimensions, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { atom, useRecoilState } from "recoil";
 
@@ -12,6 +11,7 @@ import { fetchMaterial } from "../util/http";
 import { NftsContext } from "../store/nfts-context";
 import StateText from "../components/NftDetail/StateText";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import AutoSizedImage from "../components/UI/AutoSizedImage";
 
 export const mintState = atom({
   key: "mintState",
@@ -67,11 +67,16 @@ function NftDetail({ route, navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <AutoHeightImage
-          source={{ uri: selectedMaterial.source }}
-          width={Dimensions.get("window").width}
-          style={[styles.image, { marginTop: insets.top }]}
-        />
+        <View style={styles.imageOuterView}>
+          <AutoSizedImage
+            source={{ uri: selectedMaterial.source }}
+            width={Dimensions.get("window").width}
+            style={[styles.image, { marginTop: insets.top }]}
+          />
+          {isMinting === "MINTING" && (
+            <View style={styles.imageInnerView}></View>
+          )}
+        </View>
         <View style={[styles.buttonContainer, { top: insets.top }]}>
           <CircleIconButton
             icon={"arrow-back"}
@@ -90,7 +95,7 @@ function NftDetail({ route, navigation }) {
             />
           </View>
         </View>
-        <StateText state={selectedMaterial.isMinting} />
+        <StateText state={isMinting} />
         <View style={styles.infoContainer}>
           <InfoText type={"Date and Time"} content={selectedMaterial.date} />
           <InfoText type={"Device"} content={selectedMaterial.device} />
@@ -116,8 +121,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  imageOuterView: {
+    overflow: "hidden",
+  },
   image: {
     borderRadius: 30,
+  },
+  imageInnerView: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    backgroundColor: "#00000094",
   },
   buttonContainer: {
     position: "absolute",

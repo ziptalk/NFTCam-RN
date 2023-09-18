@@ -8,7 +8,6 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import AutoHeightImage from "react-native-auto-height-image";
 import { Ionicons } from "@expo/vector-icons";
 import { useRecoilState } from "recoil";
 
@@ -19,6 +18,7 @@ import { NftsContext } from "../store/nfts-context";
 import { WalletContext } from "../store/wallet-context";
 import { fetchWallet } from "../util/http";
 import { mintState } from "./NftDetail";
+import AutoSizedImage from "../components/UI/AutoSizedImage";
 
 function MintingNft({ route, navigation }) {
   const walletCtx = useContext(WalletContext);
@@ -123,7 +123,7 @@ function MintingNft({ route, navigation }) {
             />
           </View>
         </TouchableOpacity>
-        <AutoHeightImage
+        <AutoSizedImage
           source={{ uri: contextMaterial.source }}
           width={Dimensions.get("window").width - 36}
           style={styles.image}
