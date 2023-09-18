@@ -39,6 +39,7 @@ function MintingNft({ route, navigation }) {
   }
 
   function mintingButtonHandler() {
+    mintMaterial();
     navigation.goBack();
   }
 
@@ -58,9 +59,9 @@ function MintingNft({ route, navigation }) {
     const nftData = {
       title: titleValue,
       walletAddress: walletCtx.wallets[0].walletAddress,
-      network: "MUMBAI",
+      network: walletCtx.selectedNetwork[0].identifier,
     };
-    const response = await patchMintingMaterial();
+    const response = await patchMintingMaterial(materialId, nftData);
   }
 
   function getFormattedAddress(address) {
