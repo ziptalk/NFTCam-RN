@@ -1,16 +1,13 @@
-import {
-  StyleSheet,
-  View,
-  ImageBackground,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image";
 
 import MintingIcon from "./MintingIcon";
 
 function NftItem({ source, isMinting, materialId }) {
   const navigation = useNavigation();
+  const blurhash =
+    "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
   function itemPressHandler() {
     navigation.navigate("NftDetail", {
@@ -21,13 +18,12 @@ function NftItem({ source, isMinting, materialId }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.7} onPress={itemPressHandler}>
-        <ImageBackground
+        <Image
           style={styles.image}
           source={{ uri: source }}
-          resizeMode="cover"
-        >
-          {isMinting === "MINTED" && <MintingIcon style={styles.mintingIcon} />}
-        </ImageBackground>
+          placeholder={blurhash}
+        />
+        {isMinting === "MINTED" && <MintingIcon style={styles.mintingIcon} />}
       </TouchableOpacity>
     </View>
   );
@@ -48,6 +44,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   mintingIcon: {
-    margin: 10,
+    position: "absolute",
+    right: 10,
+    bottom: 10,
   },
 });
