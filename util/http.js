@@ -76,8 +76,8 @@ export async function postMaterialMetadata(data) {
   return response.data;
 }
 
-export async function patchMintingMaterial(materialId, nftData) {
-  const response = await axiosInstance.patch(
+export async function putMintingMaterial(materialId, nftData) {
+  const response = await axiosInstance.put(
     `/material/mint/${materialId}`,
     nftData
   );

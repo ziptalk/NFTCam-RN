@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useSetRecoilState } from "recoil";
 
 import WideButton from "../components/UI/WideButton";
-import { patchMintingMaterial } from "../util/http";
+import { putMintingMaterial } from "../util/http";
 import { GlobalStyles } from "../constants/styles";
 import { NftsContext } from "../store/nfts-context";
 import { WalletContext } from "../store/wallet-context";
@@ -65,7 +65,11 @@ function MintingNft({ route, navigation }) {
       walletAddress: walletCtx.wallets[0].walletAddress,
       network: walletCtx.selectedNetwork[0].identifier,
     };
-    // const response = await patchMintingMaterial(materialId, nftData);
+    try {
+      const response = await putMintingMaterial(materialId, nftData);
+    } catch (error) {
+      console.log("Error! putMintingMaterial", error);
+    }
   }
 
   function getFormattedAddress(address) {
