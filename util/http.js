@@ -22,7 +22,6 @@ export async function reissueToken(refreshToken) {
 
 export async function fetchMaterials() {
   const response = await axiosInstance.get(`/material/list`);
-  console.log("fetchMaterials", response);
 
   return response.data.data;
 }
@@ -71,7 +70,6 @@ export async function postMaterialMetadata(data) {
     `${BASE_URL}/material/save/content`,
     data
   );
-  console.log("postMaterialMetadata: ", response);
 
   return response.data;
 }
@@ -81,7 +79,6 @@ export async function putMintingMaterial(materialId, nftData) {
     `/material/mint/${materialId}`,
     nftData
   );
-  console.log("patchMintingMaterial", response);
 
   return response.data;
 }
@@ -92,21 +89,18 @@ export async function postWallet(walletName, walletAddress) {
     walletAddress: walletAddress,
   };
   const response = await axiosInstance.post(`/wallet`, data);
-  console.log("postWallet", response);
 
   return response.data;
 }
 
 export async function fetchWallet() {
   const response = await axiosInstance.get(`/wallet`);
-  console.log("fetchWallet", response);
 
   return response.data.data;
 }
 
 export async function fetchPoint() {
   const response = await axiosInstance.get(`/point`);
-  console.log("fetchPoint", response);
 
   return response.data.point;
 }

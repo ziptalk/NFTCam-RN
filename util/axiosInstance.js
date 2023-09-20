@@ -8,21 +8,25 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
+    console.log("✅ Request Success!\n", config);
     const token = await AsyncStorage.getItem("accessToken");
     config.headers["Content-Type"] = "application/json; charset=utf-8";
     config.headers["Authorization"] = `Bearer ${token}`;
     return config;
   },
-  (err) => {
-    return Promise.reject(err);
+  (error) => {
+    console.log("🚨 Request Error!\n", error);
+    return Promise.reject(error);
   }
 );
 
 axiosInstance.interceptors.response.use(
   (config) => {
+    console.log("✅ Response Success!\n", config);
     return config;
   },
   async (error) => {
+    console.log("🚨 Response Error!\n", error);
     if (error.response?.status === 401) {
       async function reissue() {
         const refreshToken = await AsyncStorage.getItem("refreshToken");
@@ -32,7 +36,6 @@ axiosInstance.interceptors.response.use(
             refreshToken: refreshToken,
           }
         );
-        ㅋ;
         AsyncStorage.setItem("accessToken", response.data.accessToken);
         AsyncStorage.setItem("refreshToken", response.data.refreshToken);
 
