@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import WideButton from "../components/UI/WideButton";
 import { patchMintingMaterial } from "../util/http";
@@ -17,7 +17,7 @@ import { GlobalStyles } from "../constants/styles";
 import { NftsContext } from "../store/nfts-context";
 import { WalletContext } from "../store/wallet-context";
 import { fetchWallet } from "../util/http";
-import { mintState } from "./NftDetail";
+import { mintState } from "../util/state";
 import AutoSizedImage from "../components/UI/AutoSizedImage";
 
 function MintingNft({ route, navigation }) {
@@ -26,7 +26,7 @@ function MintingNft({ route, navigation }) {
   const [titleValue, setTitleValue] = useState("");
   const [isFetching, setIsFetching] = useState(true);
   const [isValid, setIsValid] = useState(false);
-  const [isMinting, setIsMinting] = useRecoilState(mintState);
+  const setIsMinting = useSetRecoilState(mintState);
   const materialId = route.params.materialId;
   const contextMaterial = nftsCtx.nfts.find(
     (nft) => nft.materialId === materialId
@@ -42,6 +42,7 @@ function MintingNft({ route, navigation }) {
   }
 
   function mintingButtonHandler() {
+    setIsMinting("MINTING");
     mintMaterial();
     navigation.goBack();
   }
@@ -65,7 +66,6 @@ function MintingNft({ route, navigation }) {
       network: walletCtx.selectedNetwork[0].identifier,
     };
     // const response = await patchMintingMaterial(materialId, nftData);
-    setIsMinting("MINTING");
   }
 
   function getFormattedAddress(address) {

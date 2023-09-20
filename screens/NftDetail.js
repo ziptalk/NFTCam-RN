@@ -12,11 +12,7 @@ import { NftsContext } from "../store/nfts-context";
 import StateText from "../components/NftDetail/StateText";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import AutoSizedImage from "../components/UI/AutoSizedImage";
-
-export const mintState = atom({
-  key: "mintState",
-  default: "NONE",
-});
+import { mintState } from "../util/state";
 
 function NftDetail({ route, navigation }) {
   const nftsCtx = useContext(NftsContext);
