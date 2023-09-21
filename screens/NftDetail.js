@@ -93,6 +93,12 @@ function NftDetail({ route, navigation }) {
         </View>
         <StateText state={isMinting} />
         <View style={styles.infoContainer}>
+          {selectedMaterial.nftId && (
+            <InfoText type={"NFT ID"} content={selectedMaterial.nftId} />
+          )}
+          {selectedMaterial.chainType && (
+            <InfoText type={"Network"} content={selectedMaterial.chainType} />
+          )}
           <InfoText type={"Date and Time"} content={selectedMaterial.date} />
           <InfoText type={"Device"} content={selectedMaterial.device} />
           <InfoText
