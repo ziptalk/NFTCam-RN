@@ -23,7 +23,9 @@ function NftItem({ source, isMinting, materialId }) {
           source={{ uri: source }}
           placeholder={blurhash}
         />
-        {isMinting === "MINTED" && <MintingIcon style={styles.mintingIcon} />}
+        {(isMinting === "MINTED" || isMinting === "MINTING") && (
+          <MintingIcon style={styles.mintingIcon} />
+        )}
       </TouchableOpacity>
     </View>
   );
