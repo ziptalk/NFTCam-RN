@@ -39,12 +39,15 @@ function MintingNft({ route, navigation }) {
 
   function titleInputChangeHandler(enteredValue) {
     setTitleValue(enteredValue);
+    console.log("title: ", titleValue, "  entered: ", enteredValue);
   }
 
   function mintingButtonHandler() {
+    const nftTitle = titleValue;
+    console.log("titleValue: ", titleValue, "  nftTitle: ", nftTitle);
     setIsMinting("MINTING");
-    mintMaterial();
-    navigation.goBack();
+    mintMaterial(nftTitle);
+    // navigation.goBack();
   }
 
   async function getWallet() {
@@ -59,9 +62,10 @@ function MintingNft({ route, navigation }) {
     setIsFetching(false);
   }
 
-  async function mintMaterial() {
+  async function mintMaterial(nftTitle) {
+    console.log("in func nftTitle", nftTitle);
     const nftData = {
-      title: titleValue,
+      title: nftTitle,
       walletAddress: walletCtx.wallets[0].walletAddress,
       network: walletCtx.selectedNetwork[0].identifier,
     };
@@ -96,7 +100,8 @@ function MintingNft({ route, navigation }) {
             ]}
             placeholder={"NFT Title"}
             placeholderTextColor={GlobalStyles.colors.gray400}
-            onChange={titleInputChangeHandler}
+            onChangeText={titleInputChangeHandler}
+            value={titleValue}
           />
         </View>
         <View style={styles.block}>
