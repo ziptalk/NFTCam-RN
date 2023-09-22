@@ -7,6 +7,7 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSetRecoilState } from "recoil";
@@ -27,6 +28,8 @@ function MintingNft({ route, navigation }) {
   const [isFetching, setIsFetching] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const setIsMinting = useSetRecoilState(mintState);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
   const materialId = route.params.materialId;
   const contextMaterial = nftsCtx.nfts.find(
     (nft) => nft.materialId === materialId
@@ -35,16 +38,33 @@ function MintingNft({ route, navigation }) {
   useEffect(() => {
     console.log("wallet context: ", walletCtx);
     getWallet();
+
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      (event) => {
+        setKeyboardHeight(event.endCoordinates.height);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardHeight(0);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   function titleInputChangeHandler(enteredValue) {
     setTitleValue(enteredValue);
-    console.log("title: ", titleValue, "  entered: ", enteredValue);
   }
 
   function mintingButtonHandler() {
     const nftTitle = titleValue;
-    console.log("titleValue: ", titleValue, "  nftTitle: ", nftTitle);
     setIsMinting("MINTING");
     mintMaterial(nftTitle);
     // navigation.goBack();
@@ -139,7 +159,15 @@ function MintingNft({ route, navigation }) {
         />
       </ScrollView>
       {titleValue && (
-        <WideButton style={styles.mintingButton} onPress={mintingButtonHandler}>
+        <WideButton
+          style={[
+            styles.mintingButton,
+            {
+              bottom: keyboardHeight ? keyboardHeight + 14 : 30,
+            },
+          ]}
+          onPress={mintingButtonHandler}
+        >
           Checkout 200P
         </WideButton>
       )}
@@ -194,6 +222,5 @@ const styles = StyleSheet.create({
   mintingButton: {
     marginHorizontal: 18,
     position: "absolute",
-    bottom: 30,
   },
 });
