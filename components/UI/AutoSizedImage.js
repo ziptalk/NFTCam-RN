@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Image } from "react-native";
+import { Image as CachedImage } from "expo-image";
 
 /**
  * width / height 만으로 이미지 크기를 자동으로 resize 해주는 컴포넌트
@@ -73,7 +74,7 @@ const AutoSizedImage = ({
 
   if (dim) {
     return (
-      <Image
+      <CachedImage
         source={source}
         style={[style, { height: dim.height, width: dim.width }]}
         onError={(e) => {
