@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View, Dimensions, Image } from "react-native";
+import { ScrollView, StyleSheet, View, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import LottieView from "lottie-react-native";
 import { atom, useRecoilState } from "recoil";
 
 import CircleIconButton from "../components/UI/CircleIconButton";
@@ -70,7 +71,14 @@ function NftDetail({ route, navigation }) {
             style={[styles.image, { marginTop: insets.top }]}
           />
           {isMinting === "MINTING" && (
-            <View style={styles.imageInnerView}></View>
+            <View style={styles.imageInnerView}>
+              <LottieView
+                style={{ width: "50%" }}
+                source={require("../assets/lotties/energyRocket.json")}
+                autoPlay
+                loop
+              />
+            </View>
           )}
         </View>
         <View style={[styles.buttonContainer, { top: insets.top }]}>
@@ -134,6 +142,9 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "absolute",
     backgroundColor: "#00000094",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonContainer: {
     position: "absolute",
