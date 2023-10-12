@@ -67,7 +67,7 @@ function MintingNft({ route, navigation }) {
     const nftTitle = titleValue;
     setIsMinting("MINTING");
     mintMaterial(nftTitle);
-    // navigation.goBack();
+    navigation.goBack();
   }
 
   async function getWallet() {

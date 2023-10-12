@@ -23,8 +23,10 @@ export async function reissueToken(refreshToken) {
 export async function fetchMaterials(cursor) {
   let response = [];
   if (cursor) {
+    console.log("커서 있음: ", cursor);
     response = await axiosInstance.get(`/material/list?cursor=${cursor}`);
   } else {
+    console.log("커서 없음");
     response = await axiosInstance.get(`/material/list`);
   }
   return response.data.data;

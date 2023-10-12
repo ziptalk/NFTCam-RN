@@ -19,7 +19,9 @@ function renderNftItem(itemData) {
 
 function AllNft({ route, navigation }) {
   const [isFetching, setIsFetching] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLast, setIsLast] = useState(false);
+  const [cursor, setCursor] = useState();
 
   const nftsCtx = useContext(NftsContext);
 
@@ -46,22 +48,26 @@ function AllNft({ route, navigation }) {
   async function getMaterials() {
     setIsFetching(true);
     try {
-      if (nftsCtx.nfts) {
-        const fetchedMaterials = await fetchMaterials(
-          nftsCtx.nfts.at(-1).materialId
-        );
-        if (fetchedMaterials.length < 8) {
-          setIsLast(true);
-        }
-        nftsCtx.pushNfts(fetchedMaterials);
-      } else {
-        const materials = await fetchMaterials();
-        nftsCtx.setNfts(materials);
+      const materials = await fetchMaterials(cursor);
+      cursor ? nftsCtx.pushNfts(materials) : nftsCtx.setNfts(materials);
+      if (materials.length < 8) {
+        setIsLast(true);
       }
+      setCursor(materials.at(-1).materialId);
     } catch (error) {
       console.log("Error! ", error.response);
     }
     setIsFetching(false);
+  }
+
+  function onRefresh() {
+    if (!isFetching && !isRefreshing) {
+      setIsRefreshing(true);
+      setCursor(null);
+      setIsLast(false);
+      getMaterials();
+      setIsRefreshing(false);
+    }
   }
 
   function onEndReached() {
@@ -167,6 +173,8 @@ function AllNft({ route, navigation }) {
         key={2}
         numColumns={2}
         style={styles.list}
+        onRefresh={onRefresh}
+        refreshing={isRefreshing}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.6}
         ListFooterComponent={isFetching && <ActivityIndicator />}
