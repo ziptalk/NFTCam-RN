@@ -6,7 +6,7 @@ export const NftsContext = createContext({
   setSelection: () => {},
   setNfts: () => {},
   addNft: () => {},
-  deleteNft: () => {},
+  pushNfts: () => {},
 });
 
 function nftReducer(state, action) {
@@ -15,8 +15,8 @@ function nftReducer(state, action) {
       return action.payload;
     case "ADD":
       return [action.payload, ...state];
-    case "DELETE":
-      return state;
+    case "PUSH":
+      return [...state, ...action.payload];
     default:
       return state;
   }
@@ -38,8 +38,8 @@ function NftsContextProvider({ children }) {
     dispatch({ type: "ADD", payload: nftData });
   }
 
-  function deleteNft(id) {
-    dispatch({ type: "DELETE", payload: id });
+  function pushNfts(nfts) {
+    dispatch({ type: "PUSH", payload: nfts });
   }
 
   const value = {
@@ -48,7 +48,7 @@ function NftsContextProvider({ children }) {
     setSelection: setSelection,
     setNfts: setNfts,
     addNft: addNft,
-    deleteNft: deleteNft,
+    pushNfts: pushNfts,
   };
 
   return <NftsContext.Provider value={value}>{children}</NftsContext.Provider>;

@@ -20,9 +20,13 @@ export async function reissueToken(refreshToken) {
   return response.data;
 }
 
-export async function fetchMaterials() {
-  const response = await axiosInstance.get(`/material/list`);
-
+export async function fetchMaterials(cursor) {
+  let response = [];
+  if (cursor) {
+    response = await axiosInstance.get(`/material/list?cursor=${cursor}`);
+  } else {
+    response = await axiosInstance.get(`/material/list`);
+  }
   return response.data.data;
 }
 

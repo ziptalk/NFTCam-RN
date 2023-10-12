@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useLayoutEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, ActivityIndicator } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import NftItem from "../components/AllNft/NftItem";
@@ -19,6 +19,7 @@ function renderNftItem(itemData) {
 
 function AllNft({ route, navigation }) {
   const [isFetching, setIsFetching] = useState(true);
+  const [isLast, setIsLast] = useState(false);
 
   const nftsCtx = useContext(NftsContext);
 
@@ -45,12 +46,28 @@ function AllNft({ route, navigation }) {
   async function getMaterials() {
     setIsFetching(true);
     try {
-      const materials = await fetchMaterials();
-      nftsCtx.setNfts(materials);
+      if (nftsCtx.nfts) {
+        const fetchedMaterials = await fetchMaterials(
+          nftsCtx.nfts.at(-1).materialId
+        );
+        if (fetchedMaterials.length < 8) {
+          setIsLast(true);
+        }
+        nftsCtx.pushNfts(fetchedMaterials);
+      } else {
+        const materials = await fetchMaterials();
+        nftsCtx.setNfts(materials);
+      }
     } catch (error) {
       console.log("Error! ", error.response);
     }
     setIsFetching(false);
+  }
+
+  function onEndReached() {
+    if (!isFetching && !isLast) {
+      getMaterials();
+    }
   }
 
   function myPageButtonHandler() {
@@ -137,9 +154,9 @@ function AllNft({ route, navigation }) {
     takePhoto();
   }
 
-  if (isFetching) {
-    return <LoadingOverlay />;
-  }
+  // if (isFetching) {
+  //   return <LoadingOverlay />;
+  // }
 
   return (
     <View style={styles.root}>
@@ -150,6 +167,9 @@ function AllNft({ route, navigation }) {
         key={2}
         numColumns={2}
         style={styles.list}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.6}
+        ListFooterComponent={isFetching && <ActivityIndicator />}
       />
       <CreateButtonWithActionSheet
         buttonStyle={styles.createButton}
